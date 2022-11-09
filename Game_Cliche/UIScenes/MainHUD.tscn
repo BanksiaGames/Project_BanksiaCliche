@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/MainHUD.gd" type="Script" id=1]
+
+[node name="MainHUD" type="CanvasLayer"]
+script = ExtResource( 1 )
+
+[node name="ButtonGive" type="Button" parent="."]
+margin_left = 428.0
+margin_top = 419.0
+margin_right = 584.0
+margin_bottom = 488.0
+text = "Give Item"
+
+[node name="ButtonChoice1" type="Button" parent="."]
+margin_left = 226.0
+margin_top = 229.0
+margin_right = 382.0
+margin_bottom = 298.0
+text = "Choice1"
+
+[node name="ButtonChoice2" type="Button" parent="."]
+margin_left = 440.0
+margin_top = 184.0
+margin_right = 596.0
+margin_bottom = 253.0
+text = "Choice2"
+
+[node name="ButtonChoice3" type="Button" parent="."]
+margin_left = 652.0
+margin_top = 232.0
+margin_right = 808.0
+margin_bottom = 301.0
+text = "Choice3"
