@@ -32,3 +32,24 @@ margin_top = 232.0
 margin_right = 808.0
 margin_bottom = 301.0
 text = "Choice3"
+
+[node name="Label_DayLeft" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -160.0
+margin_right = 160.0
+margin_bottom = 49.0
+text = "Day Left : 9999"
+align = 1
+valign = 1
+
+[node name="Label_DebtLeft" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -160.0
+margin_top = 62.0
+margin_right = 160.0
+margin_bottom = 111.0
+text = "Debt Left : 9999"
+align = 1
+valign = 1

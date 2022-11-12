@@ -10,3 +10,10 @@ script = ExtResource( 2 )
 [node name="Player" parent="." instance=ExtResource( 1 )]
 
 [node name="MainHUD" parent="." instance=ExtResource( 3 )]
+
+[connection signal="button_up" from="MainHUD/ButtonGive" to="." method="_on_ButtonGive_button_up"]
+[connection signal="button_up" from="MainHUD/ButtonChoice1" to="." method="_on_ButtonChoice1_button_up"]
+[connection signal="button_up" from="MainHUD/ButtonChoice2" to="." method="_on_ButtonChoice2_button_up"]
+[connection signal="button_up" from="MainHUD/ButtonChoice3" to="." method="_on_ButtonChoice3_button_up"]
+
+[editable path="MainHUD"]

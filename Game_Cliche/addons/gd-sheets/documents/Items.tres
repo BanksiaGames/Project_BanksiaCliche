@@ -1,0 +1,39 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/gd-sheets/data_document.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+data = [ [ "", "1001", "1002", "1003", "1004", "1005" ], [ "Name", "Wood Axe", "Silver Axe", "Golden Axe", "Apple", "Pen" ], [ "Description" ], [ "Price", "10", "100", "1000", "5", "10" ], [ "Type", "goods", "goods", "goods", "trash", "goods" ], [ "Image" ] ]
+hash_map = {
+"1001": {
+"Name": "Wood Axe",
+"Price": 10.0,
+"Type": "goods"
+},
+"1002": {
+"Name": "Silver Axe",
+"Price": 100.0,
+"Type": "goods"
+},
+"1003": {
+"Name": "Golden Axe",
+"Price": 1000.0,
+"Type": "goods"
+},
+"1004": {
+"Name": "Apple",
+"Price": 5.0,
+"Type": "trash"
+},
+"1005": {
+"Name": "Pen",
+"Price": 10.0,
+"Type": "goods"
+}
+}
+header_sizes = [ null, null, 205.0, null, null, null, null, null, null, null, null ]
+id_sizes = [ null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null ]
+columns = 11
+rows = 21
+is_dirty = false

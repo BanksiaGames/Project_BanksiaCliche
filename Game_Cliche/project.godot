@@ -9,19 +9,101 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Control",
+"class": "Cell",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/cell_base.gd"
+}, {
+"base": "Cell",
+"class": "CellData",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/cell_data.gd"
+}, {
+"base": "CellReference",
+"class": "CellHeader",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/cell_header.gd"
+}, {
+"base": "CellReference",
+"class": "CellID",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/cell_id.gd"
+}, {
+"base": "CellReference",
+"class": "CellOrigo",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/cell_origo.gd"
+}, {
+"base": "Cell",
+"class": "CellReference",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/cell_reference.gd"
+}, {
+"base": "Reference",
+"class": "GDSUtil",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/utility.gd"
+}, {
+"base": "Reference",
+"class": "GDSheets",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/GDSheets.gd"
+}, {
 "base": "Node",
 "class": "NPCBase",
 "language": "GDScript",
 "path": "res://Scripts/NPCBase.gd"
+}, {
+"base": "Reference",
+"class": "SheetDataHandler",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/sheet_data_handler.gd"
+}, {
+"base": "Reference",
+"class": "SheetDocumentsHandler",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/sheet_document_handler.gd"
+}, {
+"base": "Control",
+"class": "SheetGridContainer",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/grid_area.gd"
+}, {
+"base": "Reference",
+"class": "SheetGridHandler",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/scripts/sheet_grid_handler.gd"
+}, {
+"base": "Resource",
+"class": "SheetsDataDocument",
+"language": "GDScript",
+"path": "res://addons/gd-sheets/data_document.gd"
 } ]
 _global_script_class_icons={
-"NPCBase": "res://icon.png"
+"Cell": "",
+"CellData": "",
+"CellHeader": "",
+"CellID": "",
+"CellOrigo": "",
+"CellReference": "",
+"GDSUtil": "",
+"GDSheets": "",
+"NPCBase": "res://icon.png",
+"SheetDataHandler": "",
+"SheetDocumentsHandler": "",
+"SheetGridContainer": "",
+"SheetGridHandler": "",
+"SheetsDataDocument": ""
 }
 
 [application]
 
 config/name="Game_Cliche"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/gd-sheets/plugin.cfg" )
 
 [gui]
 
