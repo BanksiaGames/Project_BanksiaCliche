@@ -4,35 +4,64 @@
 
 [resource]
 script = ExtResource( 1 )
-data = [ [ "", "1001", "1002", "1003", "1004", "1005" ], [ "Name", "Wood Axe", "Silver Axe", "Golden Axe", "Apple", "Pen" ], [ "Description" ], [ "Price", "10", "100", "1000", "5", "10" ], [ "Type", "goods", "goods", "goods", "trash", "goods" ], [ "Image" ] ]
+data = [ [ "", "1001", "1002", "1003", "1004", "1005", "9001", "9002", "9003", "9004" ], [ "Name", "Wood Axe", "Silver Axe", "Golden Axe", "Apple", "Pen", "FishCan", "Neckless", "Clover", "Golden Ring" ], [ "Description" ], [ "Price", "10", "100", "1000", "5", "10", "10", "5000", "1", "1000" ], [ "Type", "goods", "goods", "goods", "trash", "goods", "special", "special", "special", "special" ], [ "Weight", "100", "10", "10", "300", "200", "5", "5", "5", "0" ], [ "Image" ] ]
 hash_map = {
 "1001": {
 "Name": "Wood Axe",
 "Price": 10.0,
-"Type": "goods"
+"Type": "goods",
+"Weight": 100.0
 },
 "1002": {
 "Name": "Silver Axe",
 "Price": 100.0,
-"Type": "goods"
+"Type": "goods",
+"Weight": 10.0
 },
 "1003": {
 "Name": "Golden Axe",
 "Price": 1000.0,
-"Type": "goods"
+"Type": "goods",
+"Weight": 10.0
 },
 "1004": {
 "Name": "Apple",
 "Price": 5.0,
-"Type": "trash"
+"Type": "trash",
+"Weight": 300.0
 },
 "1005": {
 "Name": "Pen",
 "Price": 10.0,
-"Type": "goods"
+"Type": "goods",
+"Weight": 200.0
+},
+"9001": {
+"Name": "FishCan",
+"Price": 10.0,
+"Type": "special",
+"Weight": 5.0
+},
+"9002": {
+"Name": "Neckless",
+"Price": 5000.0,
+"Type": "special",
+"Weight": 5.0
+},
+"9003": {
+"Name": "Clover",
+"Price": 1.0,
+"Type": "special",
+"Weight": 5.0
+},
+"9004": {
+"Name": "Golden Ring",
+"Price": 1000.0,
+"Type": "special",
+"Weight": 0.0
 }
 }
-header_sizes = [ null, null, 205.0, null, null, null, null, null, null, null, null ]
+header_sizes = [ null, 138.0, 205.0, null, null, null, null, null, null, null, null ]
 id_sizes = [ null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null ]
 columns = 11
 rows = 21

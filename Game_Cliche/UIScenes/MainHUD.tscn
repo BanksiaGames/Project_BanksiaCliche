@@ -5,35 +5,43 @@
 [node name="MainHUD" type="CanvasLayer"]
 script = ExtResource( 1 )
 
-[node name="ButtonGive" type="Button" parent="."]
-margin_left = 428.0
-margin_top = 419.0
-margin_right = 584.0
-margin_bottom = 488.0
+[node name="GameOver" type="CanvasLayer" parent="."]
+
+[node name="Label_GameOver" type="Label" parent="GameOver"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -153.0
+margin_top = 247.0
+margin_right = 167.0
+margin_bottom = 296.0
+text = "Day Left : 9999"
+align = 1
+valign = 1
+
+[node name="ButtonNewGame" type="Button" parent="GameOver"]
+margin_left = 449.0
+margin_top = 410.0
+margin_right = 605.0
+margin_bottom = 479.0
+text = "NewGame"
+
+[node name="InGame" type="CanvasLayer" parent="."]
+
+[node name="ButtonGive" type="Button" parent="InGame"]
+margin_left = 449.0
+margin_top = 410.0
+margin_right = 605.0
+margin_bottom = 479.0
 text = "Give Item"
 
-[node name="ButtonChoice1" type="Button" parent="."]
-margin_left = 226.0
-margin_top = 229.0
-margin_right = 382.0
-margin_bottom = 298.0
-text = "Choice1"
+[node name="ButtonSell" type="Button" parent="InGame"]
+margin_left = 449.0
+margin_top = 503.0
+margin_right = 605.0
+margin_bottom = 572.0
+text = "Sell Item"
 
-[node name="ButtonChoice2" type="Button" parent="."]
-margin_left = 440.0
-margin_top = 184.0
-margin_right = 596.0
-margin_bottom = 253.0
-text = "Choice2"
-
-[node name="ButtonChoice3" type="Button" parent="."]
-margin_left = 652.0
-margin_top = 232.0
-margin_right = 808.0
-margin_bottom = 301.0
-text = "Choice3"
-
-[node name="Label_DayLeft" type="Label" parent="."]
+[node name="Label_DayLeft" type="Label" parent="InGame"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -160.0
@@ -43,7 +51,7 @@ text = "Day Left : 9999"
 align = 1
 valign = 1
 
-[node name="Label_DebtLeft" type="Label" parent="."]
+[node name="Label_DebtLeft" type="Label" parent="InGame"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -160.0
@@ -53,3 +61,44 @@ margin_bottom = 111.0
 text = "Debt Left : 9999"
 align = 1
 valign = 1
+
+[node name="GodChoice" type="CanvasLayer" parent="InGame"]
+offset = Vector2( 0, 50 )
+transform = Transform2D( 1, 0, 0, 1, 0, 50 )
+
+[node name="ButtonChoice1" type="Button" parent="InGame/GodChoice"]
+margin_left = 226.0
+margin_top = 229.0
+margin_right = 382.0
+margin_bottom = 298.0
+text = "Choice1"
+
+[node name="ButtonChoice2" type="Button" parent="InGame/GodChoice"]
+margin_left = 440.0
+margin_top = 184.0
+margin_right = 596.0
+margin_bottom = 253.0
+text = "Choice2"
+
+[node name="ButtonChoice3" type="Button" parent="InGame/GodChoice"]
+margin_left = 652.0
+margin_top = 232.0
+margin_right = 808.0
+margin_bottom = 301.0
+text = "Choice3"
+
+[node name="NPCChoice" type="CanvasLayer" parent="InGame"]
+
+[node name="ButtonNPCChoice1" type="Button" parent="InGame/NPCChoice"]
+margin_left = 223.0
+margin_top = 164.0
+margin_right = 379.0
+margin_bottom = 233.0
+text = "Sell Item"
+
+[node name="ButtonNPCChoice2" type="Button" parent="InGame/NPCChoice"]
+margin_left = 658.0
+margin_top = 165.0
+margin_right = 814.0
+margin_bottom = 234.0
+text = "Sell Item"

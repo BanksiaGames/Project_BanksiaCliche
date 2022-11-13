@@ -9,22 +9,40 @@ var itemList = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	itemList.resize(10)
-	AddItem(1001, 1)
-	AddItem(1002, 1)
-	AddItem(1003, 1)
-	AddItem(1004, 1)
-	AddItem(1005, 1)
+	pass
 
 func AddItem(_itemId, _itemNum):
+	print("Inventory Add Item %s" % _itemId)
 	itemList.append(ItemInfo.new(_itemId, _itemNum))
 
 func RemoveItem(_itemInfo):
 	var itemIndex = itemList.find(_itemInfo)
 	itemList.remove(itemIndex)
 
+func ResetInventory():
+	itemList.clear()
+	AddItem("1001", 1)
+	AddItem("9001", 1)
+
 func PickItem(_index):
 	return itemList.pop_at(_index)
+
+func PrintItems():
+	var itemIdString : String = ""
+	for item in itemList:
+		itemIdString += item.itemId + " "
+	
+	print("Inventory Items : %s" % itemIdString)
+
+func GetItemCount():
+	return itemList.size()
+	
+func HasItem(_itemId):
+	var bHas = false
+	for item in itemList:
+		if item.itemId == _itemId:
+			bHas = true
+	return bHas
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

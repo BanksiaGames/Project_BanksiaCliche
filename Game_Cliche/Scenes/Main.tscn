@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/GameplayMain.gd" type="Script" id=2]
 [ext_resource path="res://UIScenes/MainHUD.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/NPCCat.tscn" type="PackedScene" id=4]
 
 [node name="GameplayMain" type="Node"]
 script = ExtResource( 2 )
@@ -11,9 +12,15 @@ script = ExtResource( 2 )
 
 [node name="MainHUD" parent="." instance=ExtResource( 3 )]
 
-[connection signal="button_up" from="MainHUD/ButtonGive" to="." method="_on_ButtonGive_button_up"]
-[connection signal="button_up" from="MainHUD/ButtonChoice1" to="." method="_on_ButtonChoice1_button_up"]
-[connection signal="button_up" from="MainHUD/ButtonChoice2" to="." method="_on_ButtonChoice2_button_up"]
-[connection signal="button_up" from="MainHUD/ButtonChoice3" to="." method="_on_ButtonChoice3_button_up"]
+[node name="Cat" parent="." instance=ExtResource( 4 )]
+
+[connection signal="button_up" from="MainHUD/GameOver/ButtonNewGame" to="." method="_on_ButtonNewGame_button_up"]
+[connection signal="button_up" from="MainHUD/InGame/ButtonGive" to="." method="_on_ButtonGive_button_up"]
+[connection signal="button_up" from="MainHUD/InGame/ButtonSell" to="." method="_on_ButtonSell_button_up"]
+[connection signal="button_up" from="MainHUD/InGame/GodChoice/ButtonChoice1" to="." method="_on_ButtonChoice1_button_up"]
+[connection signal="button_up" from="MainHUD/InGame/GodChoice/ButtonChoice2" to="." method="_on_ButtonChoice2_button_up"]
+[connection signal="button_up" from="MainHUD/InGame/GodChoice/ButtonChoice3" to="." method="_on_ButtonChoice3_button_up"]
+[connection signal="button_up" from="MainHUD/InGame/NPCChoice/ButtonNPCChoice1" to="." method="_on_ButtonNPCChoice1_button_up"]
+[connection signal="button_up" from="MainHUD/InGame/NPCChoice/ButtonNPCChoice2" to="." method="_on_ButtonNPCChoice2_button_up"]
 
 [editable path="MainHUD"]

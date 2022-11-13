@@ -1,0 +1,62 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/gd-sheets/data_document.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+data = [ [ "", "ID", "ID 2", "ID 3", "ID 4" ], [ "Name", "Cat", "Woman", "Elf", "Robber" ], [ "Description" ], [ "ChoiceDesc1", "Give a fish can", "Give the neckless", "Give the clover", "Give something valuable" ], [ "ChoiceDesc2", "Ignore", "Ignore", "Ignore", "Ignore" ], [ "TriggerType", "SpecialItem", "SpecialItem", "SpecialItem", "DayPass" ], [ "AffectValueType", "Item", "Debt", "Day", "Disaster" ], [ "Weight", "10", "10", "10", "30" ], [ "Param1", "9001", "9002", "9003", "500" ], [ "Param2", "9004", "10000", "10", "20" ], [ "Param3", "", "", "", "1000" ], [ "Param4", "", "", "", "3" ] ]
+hash_map = {
+"ID": {
+"AffectValueType": "Item",
+"ChoiceDesc1": "Give a fish can",
+"ChoiceDesc2": "Ignore",
+"Name": "Cat",
+"Param1": 9001.0,
+"Param2": 9004.0,
+"Param3": "",
+"Param4": "",
+"TriggerType": "SpecialItem",
+"Weight": 10.0
+},
+"ID 2": {
+"AffectValueType": "Debt",
+"ChoiceDesc1": "Give the neckless",
+"ChoiceDesc2": "Ignore",
+"Name": "Woman",
+"Param1": 9002.0,
+"Param2": 10000.0,
+"Param3": "",
+"Param4": "",
+"TriggerType": "SpecialItem",
+"Weight": 10.0
+},
+"ID 3": {
+"AffectValueType": "Day",
+"ChoiceDesc1": "Give the clover",
+"ChoiceDesc2": "Ignore",
+"Name": "Elf",
+"Param1": 9003.0,
+"Param2": 10.0,
+"Param3": "",
+"Param4": "",
+"TriggerType": "SpecialItem",
+"Weight": 10.0
+},
+"ID 4": {
+"AffectValueType": "Disaster",
+"ChoiceDesc1": "Give something valuable",
+"ChoiceDesc2": "Ignore",
+"Name": "Robber",
+"Param1": 500.0,
+"Param2": 20.0,
+"Param3": 1000.0,
+"Param4": 3.0,
+"TriggerType": "DayPass",
+"Weight": 30.0
+}
+}
+header_sizes = [ null, null, 167.0, 194.0, 149.0, 176.0, 99.0, null, null, null, null, null, null, null ]
+id_sizes = [ null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null ]
+columns = 14
+rows = 21
+is_dirty = false

@@ -15,3 +15,15 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+func _get_choices():
+	pass
+	
+func _event_triggered(_player):
+	pass
+	
+func _process_positive_choice(_player):
+	pass
+
+func _process_negative_choice(_player):
+	pass
