@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/MainHUD.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Scenes/MainScene.jpg" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Textures/UI/Frame_Debt.png" type="Texture" id=6]
 [ext_resource path="res://Textures/UI/ProgressBar_Time2.png" type="Texture" id=7]
 [ext_resource path="res://Textures/UI/ProgressBar_Time1.png" type="Texture" id=8]
+[ext_resource path="res://UIScenes/InventorySlot.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Button_SettingPressed"
@@ -89,10 +90,10 @@ margin_bottom = 479.0
 text = "Give Item"
 
 [node name="ButtonSell" type="Button" parent="InGame"]
-margin_left = 449.0
-margin_top = 503.0
-margin_right = 605.0
-margin_bottom = 572.0
+margin_left = 219.0
+margin_top = 387.0
+margin_right = 375.0
+margin_bottom = 456.0
 text = "Sell Item"
 
 [node name="Label_DayLeft" type="Label" parent="InGame"]
@@ -230,6 +231,82 @@ custom_fonts/font = SubResource( 5 )
 text = "32"
 align = 1
 valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -395.0
+margin_top = -100.0
+margin_right = 395.0
+grow_horizontal = 2
+alignment = 1
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="InventorySlot" parent="HBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 84.0
+margin_bottom = 100.0
+
+[node name="InventorySlot2" parent="HBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 88.0
+margin_right = 172.0
+margin_bottom = 100.0
+
+[node name="InventorySlot3" parent="HBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 176.0
+margin_right = 260.0
+margin_bottom = 100.0
+
+[node name="InventorySlot4" parent="HBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 264.0
+margin_right = 348.0
+margin_bottom = 100.0
+
+[node name="InventorySlot5" parent="HBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 352.0
+margin_right = 437.0
+margin_bottom = 100.0
+
+[node name="InventorySlot6" parent="HBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 441.0
+margin_right = 525.0
+margin_bottom = 100.0
+
+[node name="InventorySlot7" parent="HBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 529.0
+margin_right = 613.0
+margin_bottom = 100.0
+
+[node name="InventorySlot8" parent="HBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 617.0
+margin_right = 701.0
+margin_bottom = 100.0
+
+[node name="InventorySlot9" parent="HBoxContainer" instance=ExtResource( 9 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 705.0
+margin_right = 790.0
+margin_bottom = 100.0
 
 [connection signal="button_down" from="TextureButton" to="TextureButton" method="_on_TextureButton_button_down"]
 [connection signal="button_up" from="TextureButton" to="TextureButton" method="_on_TextureButton_button_up"]
