@@ -8,6 +8,9 @@ extends Control
 export var normalTexture : Texture
 export var hoverTexture : Texture
 
+export var interactBGTexture1 : Texture
+export var interactBGTexture2 : Texture
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -17,13 +20,40 @@ func _ready():
 #func _process(delta):
 #	pass
 
+var bShowInteract = false
+
+func _process(delta):
+	if $Interact.visible != bShowInteract:
+		if bShowInteract:
+			ShowInteract()
+		else:
+			HideInteract()
+					
+
+func ShowInteract():
+	$TextureRect.texture = hoverTexture
+	$Interact.show()
+	$AnimationPlayer.play("InventorySlotHovered")
+
+func HideInteract():
+	$TextureRect.texture = normalTexture
+	$Interact.hide()
+	$AnimationPlayer.play_backwards("InventorySlotHovered")
 
 func _on_InventorySlot_mouse_entered():
-	$TextureRect.texture = hoverTexture
-	$TextureRect2.show()
+	bShowInteract = true
 	
-
-
 func _on_InventorySlot_mouse_exited():
-	$TextureRect.texture = normalTexture
-	$TextureRect2.hide()	
+	bShowInteract = false	
+
+func _on_Interact_mouse_entered():
+	bShowInteract = true
+
+func _on_Interact_mouse_exited():
+	bShowInteract = false	
+
+func _on_TextureButton_Sell_mouse_entered():
+	bShowInteract = true
+
+func _on_TextureButton_Throw_mouse_entered():
+	bShowInteract = true
