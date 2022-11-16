@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scripts/MainHUD.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Scenes/MainScene.jpg" type="Texture" id=2]
@@ -10,6 +10,16 @@
 [ext_resource path="res://Textures/UI/ProgressBar_Time1.png" type="Texture" id=8]
 [ext_resource path="res://UIScenes/InventorySlot.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Textures/UI/Frame_Rope.png" type="Texture" id=10]
+[ext_resource path="res://Textures/Characters/Hermes.png" type="Texture" id=11]
+[ext_resource path="res://Textures/UI/BG_Dialogue.png" type="Texture" id=12]
+[ext_resource path="res://UIScenes/HermesBubble.tscn" type="PackedScene" id=13]
+
+[sub_resource type="DynamicFontData" id=6]
+font_path = "res://Fonts/tahoma.ttf"
+
+[sub_resource type="DynamicFont" id=7]
+size = 18
+font_data = SubResource( 6 )
 
 [sub_resource type="Animation" id=1]
 resource_name = "Button_SettingPressed"
@@ -87,74 +97,47 @@ visible = false
 
 [node name="ButtonGive" type="Button" parent="InGame"]
 margin_left = 449.0
-margin_top = 410.0
+margin_top = 47.0
 margin_right = 605.0
-margin_bottom = 479.0
+margin_bottom = 116.0
 text = "Give Item"
 
 [node name="ButtonSell" type="Button" parent="InGame"]
 margin_left = 219.0
-margin_top = 387.0
+margin_top = 75.0
 margin_right = 375.0
-margin_bottom = 456.0
+margin_bottom = 144.0
 text = "Sell Item"
 
-[node name="Label_DayLeft" type="Label" parent="InGame"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -160.0
-margin_right = 160.0
-margin_bottom = 49.0
-text = "Day Left : 9999"
-align = 1
-valign = 1
-
-[node name="Label_DebtLeft" type="Label" parent="InGame"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -160.0
-margin_top = 62.0
-margin_right = 160.0
-margin_bottom = 111.0
-text = "Debt Left : 9999"
-align = 1
-valign = 1
-
-[node name="GodChoice" type="CanvasLayer" parent="InGame"]
-offset = Vector2( 0, 50 )
-transform = Transform2D( 1, 0, 0, 1, 0, 50 )
-
-[node name="ButtonChoice1" type="Button" parent="InGame/GodChoice"]
+[node name="ButtonChoice1" type="Button" parent="InGame"]
 margin_left = 226.0
 margin_top = 229.0
 margin_right = 382.0
 margin_bottom = 298.0
 text = "Choice1"
 
-[node name="ButtonChoice2" type="Button" parent="InGame/GodChoice"]
+[node name="ButtonChoice2" type="Button" parent="InGame"]
 margin_left = 440.0
 margin_top = 184.0
 margin_right = 596.0
 margin_bottom = 253.0
 text = "Choice2"
 
-[node name="ButtonChoice3" type="Button" parent="InGame/GodChoice"]
+[node name="ButtonChoice3" type="Button" parent="InGame"]
 margin_left = 652.0
 margin_top = 232.0
 margin_right = 808.0
 margin_bottom = 301.0
 text = "Choice3"
 
-[node name="NPCChoice" type="CanvasLayer" parent="InGame"]
-
-[node name="ButtonNPCChoice1" type="Button" parent="InGame/NPCChoice"]
+[node name="ButtonNPCChoice1" type="Button" parent="InGame"]
 margin_left = 223.0
 margin_top = 164.0
 margin_right = 379.0
 margin_bottom = 233.0
 text = "Sell Item"
 
-[node name="ButtonNPCChoice2" type="Button" parent="InGame/NPCChoice"]
+[node name="ButtonNPCChoice2" type="Button" parent="InGame"]
 margin_left = 658.0
 margin_top = 165.0
 margin_right = 814.0
@@ -166,7 +149,36 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 2 )
 
-[node name="TextureButton" type="TextureButton" parent="."]
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 514, 265 )
+texture = ExtResource( 11 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Sprite"]
+margin_left = 29.0
+margin_top = -195.0
+margin_right = 231.0
+margin_bottom = -99.0
+texture = ExtResource( 12 )
+patch_margin_left = 89
+patch_margin_top = 26
+patch_margin_right = 28
+patch_margin_bottom = 33
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Label" type="Label" parent="Sprite/NinePatchRect"]
+margin_left = 15.0
+margin_top = 5.0
+margin_right = 189.0
+margin_bottom = 74.0
+custom_colors/font_color = Color( 0.184314, 0.278431, 0.588235, 1 )
+custom_fonts/font = SubResource( 7 )
+text = "What did you fall into the lake ?"
+valign = 1
+autowrap = true
+
+[node name="SettingButton" type="TextureButton" parent="."]
 margin_left = 39.0
 margin_top = 19.0
 margin_right = 105.0
@@ -176,7 +188,7 @@ texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 3 )
 script = ExtResource( 5 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TextureButton"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SettingButton"]
 anims/Button_SettingPressed = SubResource( 1 )
 
 [node name="DebtAmount" type="Control" parent="."]
@@ -250,6 +262,24 @@ custom_fonts/font = SubResource( 5 )
 text = "32"
 align = 1
 valign = 1
+
+[node name="HermesBubble" parent="." instance=ExtResource( 13 )]
+margin_left = 248.0
+margin_top = 174.0
+margin_right = 360.0
+margin_bottom = 287.0
+
+[node name="HermesBubble2" parent="." instance=ExtResource( 13 )]
+margin_left = 438.0
+margin_top = 351.0
+margin_right = 550.0
+margin_bottom = 464.0
+
+[node name="HermesBubble3" parent="." instance=ExtResource( 13 )]
+margin_left = 652.0
+margin_top = 177.0
+margin_right = 764.0
+margin_bottom = 290.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 0.5
@@ -335,5 +365,5 @@ margin_left = 795.0
 margin_right = 880.0
 margin_bottom = 100.0
 
-[connection signal="button_down" from="TextureButton" to="TextureButton" method="_on_TextureButton_button_down"]
-[connection signal="button_up" from="TextureButton" to="TextureButton" method="_on_TextureButton_button_up"]
+[connection signal="button_down" from="SettingButton" to="SettingButton" method="_on_TextureButton_button_down"]
+[connection signal="button_up" from="SettingButton" to="SettingButton" method="_on_TextureButton_button_up"]
