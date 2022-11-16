@@ -57,3 +57,19 @@ func _on_TextureButton_Sell_mouse_entered():
 
 func _on_TextureButton_Throw_mouse_entered():
 	bShowInteract = true
+
+
+func _on_TextureButton_Sell_button_down():
+	$AnimationPlayer.play("ButtonClicked_Sell")
+
+
+func _on_TextureButton_Sell_button_up():
+	$AnimationPlayer.play_backwards("ButtonClicked_Sell")
+
+
+func _on_TextureButton_Throw_button_down():
+	$AnimationPlayer.play("ButtonClicked_Throw")
+
+
+func _on_TextureButton_Throw_button_up():
+	$AnimationPlayer.play_backwards("ButtonClicked_Throw")
