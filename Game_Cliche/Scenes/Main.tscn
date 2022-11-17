@@ -13,14 +13,3 @@ script = ExtResource( 2 )
 [node name="MainHUD" parent="." instance=ExtResource( 3 )]
 
 [node name="Cat" parent="." instance=ExtResource( 4 )]
-
-[connection signal="button_up" from="MainHUD/GameOver/ButtonNewGame" to="." method="_on_ButtonNewGame_button_up"]
-[connection signal="button_up" from="MainHUD/InGame/ButtonGive" to="." method="_on_ButtonGive_button_up"]
-[connection signal="button_up" from="MainHUD/InGame/ButtonSell" to="." method="_on_ButtonSell_button_up"]
-[connection signal="button_up" from="MainHUD/InGame/GodChoice/ButtonChoice1" to="." method="_on_ButtonChoice1_button_up"]
-[connection signal="button_up" from="MainHUD/InGame/GodChoice/ButtonChoice2" to="." method="_on_ButtonChoice2_button_up"]
-[connection signal="button_up" from="MainHUD/InGame/GodChoice/ButtonChoice3" to="." method="_on_ButtonChoice3_button_up"]
-[connection signal="button_up" from="MainHUD/InGame/NPCChoice/ButtonNPCChoice1" to="." method="_on_ButtonNPCChoice1_button_up"]
-[connection signal="button_up" from="MainHUD/InGame/NPCChoice/ButtonNPCChoice2" to="." method="_on_ButtonNPCChoice2_button_up"]
-
-[editable path="MainHUD"]

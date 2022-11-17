@@ -80,3 +80,6 @@ func _on_TextureButton_Throw_button_up():
 
 func _on_CloseInteractTimer_timeout():
 	bShowInteract = false
+	
+func RefreshSlot(itemId):
+	pass

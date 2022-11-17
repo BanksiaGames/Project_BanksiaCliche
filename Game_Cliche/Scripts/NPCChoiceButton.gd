@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends TextureButton
 
 
 # Declare member variables here. Examples:
@@ -15,8 +15,12 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func RefreshInventorySlots(itemList):
-	var slotIndex : int = 1
-	#for i in Range(10):
-		#var slotName = "HBoxContainer/InventorySlot"
-		#var itemSlot = .get_node(slotName)
+
+func _on_Button_Positive_button_down():
+	$AnimationPlayer.play("Button_Choice")
+	pass # Replace with function body.
+
+
+func _on_Button_Positive_button_up():
+	$AnimationPlayer.play_backwards("Button_Choice")
+	pass # Replace with function body.
