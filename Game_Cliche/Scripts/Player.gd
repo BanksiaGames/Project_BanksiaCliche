@@ -16,8 +16,8 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func Reborn():
-	debtInfo = DebtInfo.new(10, 1000)
+func Reborn(_dayLeft, _amountLeft):
+	debtInfo = DebtInfo.new(_dayLeft, _amountLeft)
 	$Inventory.ResetInventory()
 
 func MoveNextDay():

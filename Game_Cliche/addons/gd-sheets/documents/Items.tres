@@ -4,64 +4,73 @@
 
 [resource]
 script = ExtResource( 1 )
-data = [ [ "", "1001", "1002", "1003", "1004", "1005", "9001", "9002", "9003", "9004" ], [ "Name", "Wood Axe", "Silver Axe", "Golden Axe", "Apple", "Pen", "FishCan", "Neckless", "Clover", "Golden Ring" ], [ "Description" ], [ "Price", "10", "100", "1000", "5", "10", "10", "5000", "1", "1000" ], [ "Type", "goods", "goods", "goods", "trash", "goods", "special", "special", "special", "special" ], [ "Weight", "100", "10", "10", "300", "200", "5", "5", "5", "0" ], [ "Image" ] ]
+data = [ [ "", "1001", "1002", "1003", "1004", "1005", "9001", "9002", "9003", "9004" ], [ "Name", "Wood Axe", "Silver Axe", "Golden Axe", "Banana", "Cap", "FishCan", "EarRing", "Clover", "GoldenRing" ], [ "Description" ], [ "Price", "10", "100", "1000", "5", "10", "10", "5000", "1", "1000" ], [ "Type", "goods", "goods", "goods", "trash", "goods", "special", "special", "special", "special" ], [ "Weight", "100", "10", "10", "300", "200", "5", "5", "5", "0" ], [ "Image", "res://Textures/Icons/Item24.png", "res://Textures/Icons/Item25.png", "res://Textures/Icons/Item26.png", "res://Textures/Icons/Item1.png", "res://Textures/Icons/Item2.png", "res://Textures/Icons/Item22.png", "res://Textures/Icons/Item7.png", "res://Textures/Icons/Item21.png", "res://Textures/Icons/Item6.png" ] ]
 hash_map = {
 "1001": {
+"Image": "res://Textures/Icons/Item24.png",
 "Name": "Wood Axe",
 "Price": 10.0,
 "Type": "goods",
 "Weight": 100.0
 },
 "1002": {
+"Image": "res://Textures/Icons/Item25.png",
 "Name": "Silver Axe",
 "Price": 100.0,
 "Type": "goods",
 "Weight": 10.0
 },
 "1003": {
+"Image": "res://Textures/Icons/Item26.png",
 "Name": "Golden Axe",
 "Price": 1000.0,
 "Type": "goods",
 "Weight": 10.0
 },
 "1004": {
-"Name": "Apple",
+"Image": "res://Textures/Icons/Item1.png",
+"Name": "Banana",
 "Price": 5.0,
 "Type": "trash",
 "Weight": 300.0
 },
 "1005": {
-"Name": "Pen",
+"Image": "res://Textures/Icons/Item2.png",
+"Name": "Cap",
 "Price": 10.0,
 "Type": "goods",
 "Weight": 200.0
 },
 "9001": {
+"Image": "res://Textures/Icons/Item22.png",
 "Name": "FishCan",
 "Price": 10.0,
 "Type": "special",
 "Weight": 5.0
 },
 "9002": {
-"Name": "Neckless",
+"Image": "res://Textures/Icons/Item7.png",
+"Name": "EarRing",
 "Price": 5000.0,
 "Type": "special",
 "Weight": 5.0
 },
 "9003": {
+"Image": "res://Textures/Icons/Item21.png",
 "Name": "Clover",
 "Price": 1.0,
 "Type": "special",
 "Weight": 5.0
 },
 "9004": {
-"Name": "Golden Ring",
+"Image": "res://Textures/Icons/Item6.png",
+"Name": "GoldenRing",
 "Price": 1000.0,
 "Type": "special",
 "Weight": 0.0
 }
 }
-header_sizes = [ null, 138.0, 205.0, null, null, null, null, null, null, null, null ]
+header_sizes = [ null, 138.0, 89.0, null, null, null, 277.0, null, null, null, null ]
 id_sizes = [ null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null ]
 columns = 11
 rows = 21

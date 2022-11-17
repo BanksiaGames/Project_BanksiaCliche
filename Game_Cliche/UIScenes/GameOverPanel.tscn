@@ -1,0 +1,21 @@
+[gd_scene format=2]
+
+[node name="GameOver" type="CanvasLayer"]
+
+[node name="Label_GameOver" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -153.0
+margin_top = 247.0
+margin_right = 167.0
+margin_bottom = 296.0
+text = "Day Left : 9999"
+align = 1
+valign = 1
+
+[node name="ButtonNewGame" type="Button" parent="."]
+margin_left = 449.0
+margin_top = 410.0
+margin_right = 605.0
+margin_bottom = 479.0
+text = "NewGame"

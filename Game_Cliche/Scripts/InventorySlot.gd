@@ -1,9 +1,6 @@
 extends Control
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+class_name InventorySlot
 
 export var normalTexture : Texture
 export var hoverTexture : Texture
@@ -11,10 +8,15 @@ export var hoverTexture : Texture
 export var interactBGTexture1 : Texture
 export var interactBGTexture2 : Texture
 
+signal onSellClicked(_slotIndex)
+signal onThrowClicked(_slotIndex)
+
+var itemConfig = GDSheets.sheet("Items")
+var slotIndex = 0
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -70,6 +72,7 @@ func _on_TextureButton_Sell_button_down():
 func _on_TextureButton_Sell_button_up():
 	$AnimationPlayer.play_backwards("ButtonClicked_Sell")
 	$CloseInteractTimer.start()
+	emit_signal("onSellClicked", slotIndex)
 
 func _on_TextureButton_Throw_button_down():
 	$AnimationPlayer.play("ButtonClicked_Throw")
@@ -77,9 +80,20 @@ func _on_TextureButton_Throw_button_down():
 func _on_TextureButton_Throw_button_up():
 	$AnimationPlayer.play_backwards("ButtonClicked_Throw")
 	$CloseInteractTimer.start()
+	emit_signal("onThrowClicked", slotIndex)
 
 func _on_CloseInteractTimer_timeout():
 	bShowInteract = false
 	
 func RefreshSlot(itemId):
-	pass
+	if itemId != "":
+		$TextureRect/TextureRect_Icon.show()
+		$TextureRect/Label_Price.show()
+		var itemImagePath = itemConfig[itemId]["Image"]
+		var texture = load(itemImagePath)
+		$TextureRect/TextureRect_Icon.texture = texture
+		var itemPrice = int(itemConfig[itemId]["Price"])
+		$TextureRect/Label_Price.text = "$%d" % itemPrice
+	else:
+		$TextureRect/TextureRect_Icon.hide()
+		$TextureRect/Label_Price.hide()

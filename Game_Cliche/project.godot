@@ -49,6 +49,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/gd-sheets/scripts/GDSheets.gd"
 }, {
+"base": "Control",
+"class": "InventorySlot",
+"language": "GDScript",
+"path": "res://Scripts/InventorySlot.gd"
+}, {
 "base": "Node",
 "class": "NPCBase",
 "language": "GDScript",
@@ -88,6 +93,7 @@ _global_script_class_icons={
 "CellReference": "",
 "GDSUtil": "",
 "GDSheets": "",
+"InventorySlot": "",
 "NPCBase": "res://icon.png",
 "SheetDataHandler": "",
 "SheetDocumentsHandler": "",

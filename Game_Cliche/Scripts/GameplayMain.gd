@@ -20,6 +20,8 @@ enum GamePhase { Prologue, PickItem, SelectChoice, GameOver }
 var curGamePhase = GamePhase.Prologue
 
 var curNPC : NPCBase
+var maxDayLeft = 10
+var maxDebtAmountLeft = 1000
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,25 +33,11 @@ func _ready():
 
 func StartNewGame():
 	randomize()		
-	$MainHUD/GameOver.hide()
-	$MainHUD/InGame.show()
-	$Player.Reborn()
+	#$MainHUD/GameOver.hide()
+	#$MainHUD/InGame.show()
+	$Player.Reborn(maxDayLeft, maxDebtAmountLeft)
+	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())
 	StartNewRound()
-
-func _on_ButtonGive_button_up():
-	if $Player/Inventory.GetItemCount() == 0:
-		print("Nothing Can Give !!")
-		return
-	var itemInfo = $Player/Inventory.PickItem(0)
-	currentChoiceList = CreateRandomChoices(itemInfo.itemId)
-	
-	$MainHUD/InGame/GodChoice.show()
-	
-	$MainHUD/InGame/GodChoice/ButtonChoice1.text = itemConfig[currentChoiceList[0]]["Name"]
-	$MainHUD/InGame/GodChoice/ButtonChoice2.text = itemConfig[currentChoiceList[1]]["Name"]
-	$MainHUD/InGame/GodChoice/ButtonChoice3.text = itemConfig[currentChoiceList[2]]["Name"]
-	
-	$MainHUD/InGame/ButtonGive.hide()	
 
 func _on_ButtonChoice1_button_up():
 	var result = JudgeChoice()
@@ -69,28 +57,19 @@ func _on_ButtonChoice3_button_up():
 func StartNewRound():
 	if JudgeGameOver():
 		SetGamePhase(GamePhase.GameOver)
-		$MainHUD/GameOver.show()
-		$MainHUD/InGame.hide()
-		$MainHUD/InGame/GodChoice.hide()
-		$MainHUD/InGame/NPCChoice.hide()
+		$MainHUD.hide()
+		$GameOver.show()
 		return
 	
-	$MainHUD/InGame.show()
-	
 	if TriggerNPCEvent():
-		$MainHUD/InGame/ButtonGive.hide()
+		$MainHUD.ShowNPCEvent()
 		return
 	
 	SetGamePhase(GamePhase.PickItem)
-	HideAllChoices()	
+	$MainHUD.HideAllCharacterAndChoices()
 	$Player/Inventory.PrintItems()
-	$MainHUD/InGame/Label_DayLeft.text = "Day Left : %d" % $Player.GetDayLeft()
-	$MainHUD/InGame/Label_DebtLeft.text = "Debt Left :  %d" % $Player.GetDebetAmountLeft()
-	
-func HideAllChoices():
-	$MainHUD/InGame/GodChoice.hide()
-	$MainHUD/InGame/NPCChoice.hide()	
-	$MainHUD/InGame/ButtonGive.show()
+	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
+	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())
 
 func CreateRandomChoices(_firstChoice):
 	SetGamePhase(GamePhase.SelectChoice)
@@ -214,3 +193,26 @@ func _on_ButtonNPCChoice1_button_up():
 func _on_ButtonNPCChoice2_button_up():
 	curNPC._process_negative_choice($Player) # Replace with function body.
 	StartNewRound()
+
+
+func _on_MainHUD_onInventorySlotSellClicked(_itemIndex):
+	pass # Replace with function body.
+
+
+func _on_MainHUD_onInventorySlotThrowClicked(_itemIndex):
+	if $Player/Inventory.GetItemCount() == 0:
+		print("Nothing Can Throw !!")
+		return
+	var itemInfo = $Player/Inventory.PickItem(_itemIndex - 1)
+
+	currentChoiceList = CreateRandomChoices(itemInfo.itemId)
+	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())	
+	$MainHUD.ShowHermesEvent()
+	
+	#$MainHUD/InGame/GodChoice.show()
+	
+	#$MainHUD/InGame/GodChoice/ButtonChoice1.text = itemConfig[currentChoiceList[0]]["Name"]
+	#$MainHUD/InGame/GodChoice/ButtonChoice2.text = itemConfig[currentChoiceList[1]]["Name"]
+	#$MainHUD/InGame/GodChoice/ButtonChoice3.text = itemConfig[currentChoiceList[2]]["Name"]
+	
+	#$MainHUD/InGame/ButtonGive.hide()	

@@ -22,7 +22,6 @@ func RemoveItem(_itemInfo):
 func ResetInventory():
 	itemList.clear()
 	AddItem("1001", 1)
-	AddItem("9001", 1)
 
 func PickItem(_index):
 	return itemList.pop_at(_index)
@@ -43,6 +42,9 @@ func HasItem(_itemId):
 		if item.itemId == _itemId:
 			bHas = true
 	return bHas
+
+func GetItems():
+	return itemList
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
