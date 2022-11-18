@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Textures/UI/Button_Item1.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/InventorySlot.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Textures/UI/Button_Throw2.png" type="Texture" id=8]
 [ext_resource path="res://Fonts/tahomabd.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://Textures/Icons/Item1.png" type="Texture" id=10]
+[ext_resource path="res://Textures/UI/Frame_Interact1.png" type="Texture" id=11]
 
 [sub_resource type="DynamicFontData" id=5]
 font_path = "res://Fonts/tahomabd.ttf"
@@ -55,7 +56,7 @@ tracks/1/path = NodePath("Interact/HBoxContainer/TextureButton_Sell:rect_rotatio
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1 ),
 "transitions": PoolRealArray( 1, 1 ),
@@ -83,7 +84,7 @@ tracks/1/path = NodePath("Interact/HBoxContainer/TextureButton_Throw:rect_rotati
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1 ),
 "transitions": PoolRealArray( 1, 1 ),
@@ -139,6 +140,8 @@ size_flags_vertical = 3
 script = ExtResource( 2 )
 normalTexture = ExtResource( 1 )
 hoverTexture = ExtResource( 3 )
+interactBGTexture1 = ExtResource( 6 )
+interactBGTexture2 = ExtResource( 11 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
 anchor_left = 0.5
@@ -186,7 +189,7 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="TextureRect2" type="TextureRect" parent="Interact"]
+[node name="TextureRect_Interact" type="TextureRect" parent="Interact"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -243,6 +246,7 @@ align = 1
 valign = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 3.0
 anims/ButtonClicked_Sell = SubResource( 7 )
 anims/ButtonClicked_Throw = SubResource( 8 )
 anims/InventorySlotHovered = SubResource( 4 )

@@ -2,6 +2,8 @@ extends Control
 
 class_name InventorySlot
 
+enum SlotState { Normal, ThrowOnly, SellOnly }
+
 export var normalTexture : Texture
 export var hoverTexture : Texture
 
@@ -33,6 +35,8 @@ func _process(delta):
 					
 
 func ShowInteract():
+	if not $TextureRect/TextureRect_Icon.visible:
+		return
 	$TextureRect.texture = hoverTexture
 	$Interact.show()
 	$AnimationPlayer.play("InventorySlotHovered")
@@ -85,15 +89,30 @@ func _on_TextureButton_Throw_button_up():
 func _on_CloseInteractTimer_timeout():
 	bShowInteract = false
 	
-func RefreshSlot(itemId):
-	if itemId != "":
+func RefreshSlot(_itemId):
+	if _itemId != "":
 		$TextureRect/TextureRect_Icon.show()
 		$TextureRect/Label_Price.show()
-		var itemImagePath = itemConfig[itemId]["Image"]
+		var itemImagePath = itemConfig[_itemId]["Image"]
 		var texture = load(itemImagePath)
 		$TextureRect/TextureRect_Icon.texture = texture
-		var itemPrice = int(itemConfig[itemId]["Price"])
+		var itemPrice = int(itemConfig[_itemId]["Price"])
 		$TextureRect/Label_Price.text = "$%d" % itemPrice
 	else:
 		$TextureRect/TextureRect_Icon.hide()
 		$TextureRect/Label_Price.hide()
+	
+func SetSlotState(_slotState):
+	match _slotState:
+		SlotState.Normal:
+			$Interact/HBoxContainer/TextureButton_Sell.show()
+			$Interact/HBoxContainer/TextureButton_Throw.show()
+			$Interact/TextureRect_Interact.texture = interactBGTexture1
+		SlotState.SellOnly:
+			$Interact/HBoxContainer/TextureButton_Sell.show()
+			$Interact/HBoxContainer/TextureButton_Throw.hide()
+			$Interact/TextureRect_Interact.texture = interactBGTexture2
+		SlotState.ThrowOnly:
+			$Interact/HBoxContainer/TextureButton_Sell.hide()
+			$Interact/HBoxContainer/TextureButton_Throw.show()
+			$Interact/TextureRect_Interact.texture = interactBGTexture2

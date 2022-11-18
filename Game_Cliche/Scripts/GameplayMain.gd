@@ -67,7 +67,10 @@ func StartNewRound():
 	
 	SetGamePhase(GamePhase.PickItem)
 	$MainHUD.HideAllCharacterAndChoices()
-	$Player/Inventory.PrintItems()
+	if $Player/Inventory.GetItemCount() == 1:
+		$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.ThrowOnly)
+	else:
+		$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.Normal)
 	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
 	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())
 
@@ -206,7 +209,8 @@ func _on_MainHUD_onInventorySlotThrowClicked(_itemIndex):
 	var itemInfo = $Player/Inventory.PickItem(_itemIndex - 1)
 
 	currentChoiceList = CreateRandomChoices(itemInfo.itemId)
-	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())	
+	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())
+	$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.SellOnly)
 	$MainHUD.ShowHermesEvent()
 	
 	#$MainHUD/InGame/GodChoice.show()

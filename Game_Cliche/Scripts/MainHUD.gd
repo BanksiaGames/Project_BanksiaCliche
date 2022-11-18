@@ -34,6 +34,15 @@ func RefreshInventorySlots(itemList):
 		else:
 			itemSlot.RefreshSlot("")
 		slotIndex += 1
+		
+func RefreshInventorySlotsState(_slotState):
+	var slotIndex : int = 1
+	for i in range(10):
+		var slotName = "HBoxContainer/InventorySlot%d" % slotIndex
+		var itemSlot : InventorySlot = .get_node(slotName)
+		itemSlot.SetSlotState(_slotState)
+		slotIndex += 1
+	pass
 
 func ShowNPCEvent():
 	$MainCharacter.show()
