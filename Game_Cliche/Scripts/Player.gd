@@ -26,12 +26,18 @@ func MoveNextDay():
 func GetDayLeft():
 	return debtInfo.dayLeft
 	
-func SellItem():
+func SellItem(_itemIndex):
 	if $Inventory.GetItemCount() == 0:
 		return
-	var item = $Inventory.PickItem(0)
+	var item = $Inventory.PickItem(_itemIndex)
 	var itemPrice = int(itemConfig[item.itemId]["Price"])
 	RepayDebt(itemPrice)
+
+func SellAllItem():
+	while $Inventory.GetItemCount() > 0 :
+		var item = $Inventory.PickItem(0)
+		var itemPrice = int(itemConfig[item.itemId]["Price"])
+		RepayDebt(itemPrice)
 	
 func RepayDebt(_amount):
 	debtInfo.amountLeft -= _amount

@@ -1,11 +1,9 @@
-extends Node
-
-class_name NPCBase, "res://icon.png"
+extends CanvasLayer
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-export var bodyTexture : Texture
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,17 +14,3 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func _get_choices():
-	pass
-	
-func _event_triggered(_player):
-	pass
-	
-func _process_positive_choice(_player):
-	pass
-
-func _process_negative_choice(_player):
-	pass
-
-func _reset_event():
-	pass

@@ -15,12 +15,8 @@ func _ready():
 #func _process(delta):
 #	pass
 
-
 func _on_Button_Positive_button_down():
 	$AnimationPlayer.play("Button_Choice")
-	pass # Replace with function body.
-
 
 func _on_Button_Positive_button_up():
 	$AnimationPlayer.play_backwards("Button_Choice")
-	pass # Replace with function body.

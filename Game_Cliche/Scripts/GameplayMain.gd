@@ -1,82 +1,66 @@
 extends Node
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 var itemConfig = GDSheets.sheet("Items")
 var currentChoiceList = []
 
 enum ChoicResult { Nothing, ReturnItem, GiveChoice, Bingo }
 var choiceResultDic = {
 	ChoicResult.Nothing    : 10,
-	ChoicResult.ReturnItem : 50,
-	ChoicResult.GiveChoice : 50,
-	ChoicResult.Bingo      : 20
+	ChoicResult.ReturnItem : 30,
+	ChoicResult.GiveChoice : 20,
+	ChoicResult.Bingo      : 40
 }
 
 enum GamePhase { Prologue, PickItem, SelectChoice, GameOver }
 var curGamePhase = GamePhase.Prologue
 
 var curNPC : NPCBase
-var maxDayLeft = 10
-var maxDebtAmountLeft = 1000
+var maxDayLeft = 30
+var maxDebtAmountLeft = 10000
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	randomize()
+	$GameOver/ButtonNewGame.connect("button_up", self, "_on_button_newgame_clicked")
 	StartNewGame()
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+func _on_button_newgame_clicked():
+	$MainHUD.show()
+	$GameOver.hide()
+	StartNewGame()
 
 func StartNewGame():
-	randomize()		
-	#$MainHUD/GameOver.hide()
-	#$MainHUD/InGame.show()
 	$Player.Reborn(maxDayLeft, maxDebtAmountLeft)
-	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())
-	StartNewRound()
-
-func _on_ButtonChoice1_button_up():
-	var result = JudgeChoice()
-	ProcessChoiceResult(0, result)
-	StartNewRound()
-
-func _on_ButtonChoice2_button_up():
-	var result = JudgeChoice()
-	ProcessChoiceResult(1, result)
-	StartNewRound()
-	
-func _on_ButtonChoice3_button_up():
-	var result = JudgeChoice()
-	ProcessChoiceResult(2, result)
+	$Cat._reset_event()
 	StartNewRound()
 
 func StartNewRound():
+	$MainHUD.HideAllCharacterAndChoices()	
+	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
+	
+	if $Player.GetDayLeft() == 0:
+		$Player.SellAllItem()
+	
+	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())	
+	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())	
+	
 	if JudgeGameOver():
-		SetGamePhase(GamePhase.GameOver)
-		$MainHUD.hide()
-		$GameOver.show()
+		SetGamePhase(GamePhase.GameOver)		
+		$GameOverTimer.start()
 		return
 	
 	if TriggerNPCEvent():
-		$MainHUD.ShowNPCEvent()
 		return
 	
 	SetGamePhase(GamePhase.PickItem)
-	$MainHUD.HideAllCharacterAndChoices()
 	if $Player/Inventory.GetItemCount() == 1:
 		$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.ThrowOnly)
 	else:
 		$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.Normal)
-	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
-	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())
 
 func CreateRandomChoices(_firstChoice):
 	SetGamePhase(GamePhase.SelectChoice)
-	var choiceList = [_firstChoice]
+	var choiceList = []
 	
 	var itemPool = []
 	var itemTotalWeight : int = 0
@@ -104,6 +88,8 @@ func CreateRandomChoices(_firstChoice):
 			curIndex += 1
 		itemPool.remove(pickIndex)
 	
+	choiceList.append(_firstChoice)
+	
 	print("Get Random Choices")
 	print(choiceList)
 	return choiceList
@@ -128,26 +114,47 @@ func ProcessChoiceResult(choiceIndex, result):
 	match result:
 		ChoicResult.Nothing:
 			print("Do Nothing")
+			for i in range(3):
+				# Play Bubble i explode
+				var bubble : HermesBubble = $MainHUD.GetHermesBubble(i + 1)
+				bubble.PlayExplode()
 		ChoicResult.ReturnItem:
 			print("ReturnItem")
-			$Player/Inventory.AddItem(currentChoiceList[0], 1)
+			$Player/Inventory.AddItem(currentChoiceList[2], 1)
+			# Play Bubble 3 Move to Inventory
+			for i in range(3):
+				# Play Bubble i explode
+				var bubble : HermesBubble = $MainHUD.GetHermesBubble(i + 1)
+				if i != 2:
+					bubble.PlayExplode()
+				else:
+					bubble.PlayGain()
+					
 		ChoicResult.GiveChoice:
 			print("GiveChoice")
 			$Player/Inventory.AddItem(currentChoiceList[choiceIndex], 1)
+			# Play Bubble choiceIndex Move to Inventory
+			for i in range(3):
+				# Play Bubble i explode
+				var bubble : HermesBubble = $MainHUD.GetHermesBubble(i + 1)
+				if i != choiceIndex:
+					bubble.PlayExplode()
+				else:
+					bubble.PlayGain()
+					
 		ChoicResult.Bingo:
 			print("Bingo!!!")
+			var bubbleIndex = 1
 			for choice in currentChoiceList:
-				$Player/Inventory.AddItem(choice, 1)
-	$Player.MoveNextDay()
+				if $Player/Inventory.AddItem(choice, 1) :
+					var bubble : HermesBubble = $MainHUD.GetHermesBubble(bubbleIndex)
+					bubble.PlayGain()
+				else:
+					# Play Bubble bubbleIndex fall into Lake
+					var bubble : HermesBubble = $MainHUD.GetHermesBubble(bubbleIndex)
+					bubble.PlayFall()
+				bubbleIndex += 1
 
-func _on_ButtonSell_button_up():
-	if $Player/Inventory.GetItemCount() == 1 and GetGamePhase() == GamePhase.PickItem:
-		print("No More Item Left !!")
-		return
-	$Player.SellItem()
-	$Player/Inventory.PrintItems()
-	$MainHUD/InGame/Label_DebtLeft.text = "Debt Left :  %d" % $Player.GetDebetAmountLeft()	
-	
 func SetGamePhase(_phase):
 	curGamePhase = _phase
 
@@ -162,13 +169,13 @@ func JudgeGameOver():
 	
 	if itemLeft == 0:
 		bGameOver = true
-		$MainHUD/GameOver/Label_GameOver.text = "No More Item Left !!!"
+		$GameOver/Label_GameOver.text = "No More Item Left !!!"
 	elif debtLeft <= 0:
 		bGameOver = true
-		$MainHUD/GameOver/Label_GameOver.text = "You are free man now !!!"		
+		$GameOver/Label_GameOver.text = "You are free man now !!!"		
 	elif dayLeft <= 0:
 		bGameOver = true
-		$MainHUD/GameOver/Label_GameOver.text = "Time to work in underground !!!"				
+		$GameOver/Label_GameOver.text = "Time to work in underground !!!"				
 		
 	return bGameOver
 
@@ -179,44 +186,72 @@ func TriggerNPCEvent():
 	return false
 
 func ProcessNPCEvent(_npc):
-	$MainHUD/InGame/GodChoice.hide()
-	$MainHUD/InGame/NPCChoice.show()
 	curNPC = _npc
 	var npcChoices = _npc._get_choices()
-	$MainHUD/InGame/NPCChoice/ButtonNPCChoice1.text = npcChoices[0]
-	$MainHUD/InGame/NPCChoice/ButtonNPCChoice2.text = npcChoices[1]
+	$MainHUD.ShowNPCEvent(npcChoices, curNPC.bodyTexture)
 
 func _on_ButtonNewGame_button_up():
 	StartNewGame()
 
-func _on_ButtonNPCChoice1_button_up():
-	curNPC._process_positive_choice($Player) # Replace with function body.
-	StartNewRound()
-
-func _on_ButtonNPCChoice2_button_up():
-	curNPC._process_negative_choice($Player) # Replace with function body.
-	StartNewRound()
-
-
 func _on_MainHUD_onInventorySlotSellClicked(_itemIndex):
-	pass # Replace with function body.
-
+	if $Player/Inventory.GetItemCount() == 1 and GetGamePhase() == GamePhase.PickItem:
+		print("No More Item Left !!")
+		return
+	$Player.SellItem(_itemIndex)
+	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())
+	
+	if curGamePhase == GamePhase.PickItem:
+		if $Player/Inventory.GetItemCount() == 1:
+			$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.ThrowOnly)
+		else:
+			$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.Normal)
+	
+	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())
+	if JudgeGameOver():
+		SetGamePhase(GamePhase.GameOver)
+		$MainHUD.hide()
+		$GameOver.show()
 
 func _on_MainHUD_onInventorySlotThrowClicked(_itemIndex):
 	if $Player/Inventory.GetItemCount() == 0:
 		print("Nothing Can Throw !!")
 		return
-	var itemInfo = $Player/Inventory.PickItem(_itemIndex - 1)
+	var itemInfo = $Player/Inventory.PickItem(_itemIndex)
 
 	currentChoiceList = CreateRandomChoices(itemInfo.itemId)
+	
+	yield(get_tree().create_timer(0.2), "timeout")
+	
 	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())
 	$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.SellOnly)
-	$MainHUD.ShowHermesEvent()
+	$MainHUD.PlayDropItem(itemInfo.itemId)
 	
-	#$MainHUD/InGame/GodChoice.show()
+	yield(get_tree().create_timer(1), "timeout")
 	
-	#$MainHUD/InGame/GodChoice/ButtonChoice1.text = itemConfig[currentChoiceList[0]]["Name"]
-	#$MainHUD/InGame/GodChoice/ButtonChoice2.text = itemConfig[currentChoiceList[1]]["Name"]
-	#$MainHUD/InGame/GodChoice/ButtonChoice3.text = itemConfig[currentChoiceList[2]]["Name"]
+	$MainHUD.ShowHermesEvent(currentChoiceList)
+
+func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
+	var result = JudgeChoice()
 	
-	#$MainHUD/InGame/ButtonGive.hide()	
+	$MainHUD.PlayCharacterTalkingBubble("Blalalalalala")
+	
+	yield(get_tree().create_timer(0.75), "timeout")	
+	
+	ProcessChoiceResult(_bubbleIndex, result)
+	
+	yield(get_tree().create_timer(1), "timeout")	
+	
+	$Player.MoveNextDay()	
+	StartNewRound()
+
+func _on_MainHUD_onNpcChoiceSelected(_bPositive):
+	if _bPositive:
+		curNPC._process_positive_choice($Player)
+	else:
+		curNPC._process_negative_choice($Player)
+	StartNewRound()
+
+
+func _on_GameOverTimer_timeout():
+	$MainHUD.hide()
+	$GameOver.show()

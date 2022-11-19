@@ -13,7 +13,10 @@ func _ready():
 
 func AddItem(_itemId, _itemNum):
 	print("Inventory Add Item %s" % _itemId)
-	itemList.append(ItemInfo.new(_itemId, _itemNum))
+	if itemList.size() < 10 :
+		itemList.append(ItemInfo.new(_itemId, _itemNum))
+		return true
+	return false
 
 func RemoveItem(_itemInfo):
 	var itemIndex = itemList.find(_itemInfo)

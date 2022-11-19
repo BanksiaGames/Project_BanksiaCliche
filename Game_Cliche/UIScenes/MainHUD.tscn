@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Scripts/MainHUD.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Scenes/MainScene.jpg" type="Texture" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://UIScenes/NPCChoice.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Textures/UI/Button_Negative1.png" type="Texture" id=15]
 [ext_resource path="res://Textures/UI/Button_Negative2.png" type="Texture" id=16]
+[ext_resource path="res://Textures/Icons/Item1.png" type="Texture" id=17]
 
 [sub_resource type="DynamicFontData" id=6]
 font_path = "res://Fonts/tahoma.ttf"
@@ -87,6 +88,102 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ) ]
 }
 
+[sub_resource type="Animation" id=9]
+resource_name = "Anim_DropItem"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("DropItem:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 2 ),
+"update": 0,
+"values": [ Vector2( 500, 300 ), Vector2( 500, 300 ), Vector2( 500, 300 ), Vector2( 500, 450 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("DropItem:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 2, 2 ), Vector2( 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("DropItem:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.74902 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "CharacterPopup"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("MainCharacter:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MainCharacter:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.74902 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MainCharacter/NinePatchRect:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1e-05, 1e-05 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "CharacterTalk"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("MainCharacter/NinePatchRect:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1e-05, 1e-05 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
+}
+
 [node name="MainHUD" type="CanvasLayer"]
 script = ExtResource( 1 )
 
@@ -96,8 +193,9 @@ anchor_bottom = 1.0
 texture = ExtResource( 2 )
 
 [node name="MainCharacter" type="Sprite" parent="."]
-visible = false
+self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 514, 265 )
+scale = Vector2( 1e-05, 1e-05 )
 texture = ExtResource( 11 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="MainCharacter"]
@@ -105,6 +203,8 @@ margin_left = 29.0
 margin_top = -195.0
 margin_right = 231.0
 margin_bottom = -99.0
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 42, 93 )
 texture = ExtResource( 12 )
 patch_margin_left = 89
 patch_margin_top = 26
@@ -211,7 +311,6 @@ align = 1
 valign = 1
 
 [node name="HermesChoice" type="Control" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -221,23 +320,23 @@ margin_top = -20.0
 margin_right = 20.0
 margin_bottom = 20.0
 
-[node name="HermesBubble" parent="HermesChoice" instance=ExtResource( 13 )]
-margin_left = -248.0
-margin_top = -149.0
-margin_right = -136.0
-margin_bottom = -36.0
+[node name="HermesBubble1" parent="HermesChoice" instance=ExtResource( 13 )]
+margin_left = -166.0
+margin_top = -79.0
+margin_right = -166.0
+margin_bottom = -79.0
 
 [node name="HermesBubble2" parent="HermesChoice" instance=ExtResource( 13 )]
-margin_left = -81.0
-margin_top = 66.0
-margin_right = 31.0
-margin_bottom = 179.0
+margin_left = 234.0
+margin_top = 4.0
+margin_right = 234.0
+margin_bottom = 4.0
 
 [node name="HermesBubble3" parent="HermesChoice" instance=ExtResource( 13 )]
-margin_left = 183.0
-margin_top = -82.0
-margin_right = 295.0
-margin_bottom = 31.0
+margin_left = 12.0
+margin_top = 125.0
+margin_right = 12.0
+margin_bottom = 125.0
 
 [node name="NPCChoice" type="Control" parent="."]
 visible = false
@@ -255,8 +354,9 @@ margin_left = -324.0
 margin_top = -64.0
 margin_right = -121.0
 margin_bottom = 24.0
+rect_scale = Vector2( 0.9, 0.9 )
 
-[node name="Button_Positive2" parent="NPCChoice" instance=ExtResource( 14 )]
+[node name="Button_Negative" parent="NPCChoice" instance=ExtResource( 14 )]
 margin_left = 160.0
 margin_top = -70.0
 margin_right = 363.0
@@ -264,10 +364,10 @@ margin_bottom = 18.0
 texture_normal = ExtResource( 15 )
 texture_pressed = ExtResource( 16 )
 
-[node name="Label" parent="NPCChoice/Button_Positive2" index="0"]
+[node name="Label" parent="NPCChoice/Button_Negative" index="0"]
 text = "No"
 
-[node name="AnimationPlayer" parent="NPCChoice/Button_Positive2" index="1"]
+[node name="AnimationPlayer" parent="NPCChoice/Button_Negative" index="1"]
 anims/Button_Choice = SubResource( 8 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -354,8 +454,24 @@ margin_left = 795.0
 margin_right = 880.0
 margin_bottom = 100.0
 
+[node name="DropItem" type="Sprite" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 500, 300 )
+scale = Vector2( 1e-05, 1e-05 )
+texture = ExtResource( 17 )
+
+[node name="AnimationPlayer_DropItem" type="AnimationPlayer" parent="."]
+anims/Anim_DropItem = SubResource( 9 )
+
+[node name="AnimationPlayer_MainCharacter" type="AnimationPlayer" parent="."]
+playback_speed = 1.5
+anims/CharacterPopup = SubResource( 10 )
+anims/CharacterTalk = SubResource( 11 )
+
+[connection signal="hide" from="MainCharacter" to="." method="_on_MainCharacter_hide"]
 [connection signal="button_down" from="SettingButton" to="SettingButton" method="_on_TextureButton_button_down"]
 [connection signal="button_up" from="SettingButton" to="SettingButton" method="_on_TextureButton_button_up"]
+[connection signal="hide" from="HermesChoice" to="." method="_on_HermesChoice_hide"]
 
 [editable path="NPCChoice/Button_Positive"]
-[editable path="NPCChoice/Button_Positive2"]
+[editable path="NPCChoice/Button_Negative"]

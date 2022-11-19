@@ -4,7 +4,6 @@ extends NPCBase
 # var a = 2
 # var b = "text"
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -21,8 +20,12 @@ var targetItemId = "9001"
 var bonusItemId = "9004"
 var probability = 30
 var bProcessed = false
+var bEnableEvent = false
 
 func _event_triggered(_player):
+	if not bEnableEvent:
+		bEnableEvent = true
+		return
 	var bTriggered = false
 	var bHasTargetItem = _player.get_node("Inventory").HasItem(targetItemId)
 	if bHasTargetItem:
@@ -41,4 +44,9 @@ func _process_positive_choice(_player):
 
 func _process_negative_choice(_player):
 	print("Cat walk away ... ")	
+	pass
+	
+func _reset_event():
+	bProcessed = false
+	bEnableEvent = false
 	pass
