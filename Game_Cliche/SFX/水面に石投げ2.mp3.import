@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/水面に石投げ2.mp3-20b10ac0aad44647874c1f9eb5196431.mp3str"
+
+[deps]
+
+source_file="res://SFX/水面に石投げ2.mp3"
+dest_files=[ "res://.import/水面に石投げ2.mp3-20b10ac0aad44647874c1f9eb5196431.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

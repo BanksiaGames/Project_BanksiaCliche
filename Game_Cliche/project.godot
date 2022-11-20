@@ -111,6 +111,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Game_Cliche"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 
 [editor_plugins]
@@ -120,6 +121,12 @@ enabled=PoolStringArray( "res://addons/gd-sheets/plugin.cfg" )
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+
+[importer_defaults]
+
+mp3={
+"loop": false
+}
 
 [physics]
 

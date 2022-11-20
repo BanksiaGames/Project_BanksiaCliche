@@ -4,74 +4,219 @@
 
 [resource]
 script = ExtResource( 1 )
-data = [ [ "", "1001", "1002", "1003", "1004", "1005", "9001", "9002", "9003", "9004" ], [ "Name", "Wood Axe", "Silver Axe", "Golden Axe", "Banana", "Cap", "FishCan", "EarRing", "Clover", "GoldenRing" ], [ "Description" ], [ "Price", "10", "100", "1000", "5", "10", "10", "2500", "1", "10000" ], [ "Type", "goods", "goods", "goods", "trash", "goods", "special", "special", "special", "special" ], [ "Weight", "0", "10", "5", "10", "10", "5", "5", "5", "0" ], [ "Image", "res://Textures/Icons/Item24.png", "res://Textures/Icons/Item25.png", "res://Textures/Icons/Item26.png", "res://Textures/Icons/Item1.png", "res://Textures/Icons/Item2.png", "res://Textures/Icons/Item22.png", "res://Textures/Icons/Item7.png", "res://Textures/Icons/Item21.png", "res://Textures/Icons/Item6.png" ] ]
+data = [ [ "", "1001", "1002", "1003", "1004", "1005", "1006", "1007", "1008", "1009", "1010", "1011", "1012", "1013", "1014", "1015", "1016", "1017", "1018", "1019", "1020", "1021", "1022", "1023", "1024", "1025", "1026" ], [ "Name", "BananaSkin", "Cap", "PaperCup", "FishBone", "PlasticBottle", "Ring", "EarRing", "Watch", "GucciBag", "Car", "Slippers", "Chair", "Lamp", "MonsterToy", "Sofa", "HairDryer", "DigiCamera", "Oven", "Display", "Refrigerator", "Clover", "FishCan", "BanksiaFlower", "Axe", "SilverAxe", "GoldenAxe" ], [ "Description" ], [ "Price", "1", "2", "2", "1", "2", "10000", "20000", "5000", "7500", "50000", "30", "80", "100", "250", "800", "500", "1000", "1500", "2500", "3000", "1", "5", "118", "100", "5000", "10000" ], [ "Type", "trash", "trash", "trash", "trash", "trash", "luxury", "luxury", "luxury", "luxury", "luxury", "goods", "goods", "goods", "goods", "goods", "goods", "goods", "goods", "goods", "goods", "special", "special", "special", "init", "init", "init" ], [ "Weight", "10", "10", "10", "10", "10", "3", "3", "3", "3", "3", "7", "7", "7", "7", "7", "7", "7", "7", "7", "7", "1", "1", "1", "0", "0", "0" ], [ "WeightModifier", "10", "10", "10", "10", "10", "3", "3", "3", "3", "3", "7", "7", "7", "7", "7", "7", "7", "7", "7", "7", "0", "0", "0", "0", "0", "0" ], [ "Image", "res://Textures/Icons/Item1.png", "res://Textures/Icons/Item2.png", "res://Textures/Icons/Item3.png", "res://Textures/Icons/Item4.png", "res://Textures/Icons/Item5.png", "res://Textures/Icons/Item6.png", "res://Textures/Icons/Item7.png", "res://Textures/Icons/Item8.png", "res://Textures/Icons/Item9.png", "res://Textures/Icons/Item10.png", "res://Textures/Icons/Item11.png", "res://Textures/Icons/Item12.png", "res://Textures/Icons/Item13.png", "res://Textures/Icons/Item14.png", "res://Textures/Icons/Item15.png", "res://Textures/Icons/Item16.png", "res://Textures/Icons/Item17.png", "res://Textures/Icons/Item18.png", "res://Textures/Icons/Item19.png", "res://Textures/Icons/Item20.png", "res://Textures/Icons/Item21.png", "res://Textures/Icons/Item22.png", "res://Textures/Icons/Item23.png", "res://Textures/Icons/Item24.png", "res://Textures/Icons/Item25.png", "res://Textures/Icons/Item26.png" ] ]
 hash_map = {
 "1001": {
-"Image": "res://Textures/Icons/Item24.png",
-"Name": "Wood Axe",
-"Price": 10.0,
-"Type": "goods",
-"Weight": 0.0
+"Image": "res://Textures/Icons/Item1.png",
+"Name": "BananaSkin",
+"Price": 1.0,
+"Type": "trash",
+"Weight": 10.0,
+"WeightModifier": 10.0
 },
 "1002": {
-"Image": "res://Textures/Icons/Item25.png",
-"Name": "Silver Axe",
-"Price": 100.0,
-"Type": "goods",
-"Weight": 10.0
-},
-"1003": {
-"Image": "res://Textures/Icons/Item26.png",
-"Name": "Golden Axe",
-"Price": 1000.0,
-"Type": "goods",
-"Weight": 5.0
-},
-"1004": {
-"Image": "res://Textures/Icons/Item1.png",
-"Name": "Banana",
-"Price": 5.0,
-"Type": "trash",
-"Weight": 10.0
-},
-"1005": {
 "Image": "res://Textures/Icons/Item2.png",
 "Name": "Cap",
-"Price": 10.0,
-"Type": "goods",
-"Weight": 10.0
+"Price": 2.0,
+"Type": "trash",
+"Weight": 10.0,
+"WeightModifier": 10.0
 },
-"9001": {
-"Image": "res://Textures/Icons/Item22.png",
-"Name": "FishCan",
-"Price": 10.0,
-"Type": "special",
-"Weight": 5.0
+"1003": {
+"Image": "res://Textures/Icons/Item3.png",
+"Name": "PaperCup",
+"Price": 2.0,
+"Type": "trash",
+"Weight": 10.0,
+"WeightModifier": 10.0
 },
-"9002": {
+"1004": {
+"Image": "res://Textures/Icons/Item4.png",
+"Name": "FishBone",
+"Price": 1.0,
+"Type": "trash",
+"Weight": 10.0,
+"WeightModifier": 10.0
+},
+"1005": {
+"Image": "res://Textures/Icons/Item5.png",
+"Name": "PlasticBottle",
+"Price": 2.0,
+"Type": "trash",
+"Weight": 10.0,
+"WeightModifier": 10.0
+},
+"1006": {
+"Image": "res://Textures/Icons/Item6.png",
+"Name": "Ring",
+"Price": 10000.0,
+"Type": "luxury",
+"Weight": 3.0,
+"WeightModifier": 3.0
+},
+"1007": {
 "Image": "res://Textures/Icons/Item7.png",
 "Name": "EarRing",
-"Price": 2500.0,
-"Type": "special",
-"Weight": 5.0
+"Price": 20000.0,
+"Type": "luxury",
+"Weight": 3.0,
+"WeightModifier": 3.0
 },
-"9003": {
+"1008": {
+"Image": "res://Textures/Icons/Item8.png",
+"Name": "Watch",
+"Price": 5000.0,
+"Type": "luxury",
+"Weight": 3.0,
+"WeightModifier": 3.0
+},
+"1009": {
+"Image": "res://Textures/Icons/Item9.png",
+"Name": "GucciBag",
+"Price": 7500.0,
+"Type": "luxury",
+"Weight": 3.0,
+"WeightModifier": 3.0
+},
+"1010": {
+"Image": "res://Textures/Icons/Item10.png",
+"Name": "Car",
+"Price": 50000.0,
+"Type": "luxury",
+"Weight": 3.0,
+"WeightModifier": 3.0
+},
+"1011": {
+"Image": "res://Textures/Icons/Item11.png",
+"Name": "Slippers",
+"Price": 30.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1012": {
+"Image": "res://Textures/Icons/Item12.png",
+"Name": "Chair",
+"Price": 80.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1013": {
+"Image": "res://Textures/Icons/Item13.png",
+"Name": "Lamp",
+"Price": 100.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1014": {
+"Image": "res://Textures/Icons/Item14.png",
+"Name": "MonsterToy",
+"Price": 250.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1015": {
+"Image": "res://Textures/Icons/Item15.png",
+"Name": "Sofa",
+"Price": 800.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1016": {
+"Image": "res://Textures/Icons/Item16.png",
+"Name": "HairDryer",
+"Price": 500.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1017": {
+"Image": "res://Textures/Icons/Item17.png",
+"Name": "DigiCamera",
+"Price": 1000.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1018": {
+"Image": "res://Textures/Icons/Item18.png",
+"Name": "Oven",
+"Price": 1500.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1019": {
+"Image": "res://Textures/Icons/Item19.png",
+"Name": "Display",
+"Price": 2500.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1020": {
+"Image": "res://Textures/Icons/Item20.png",
+"Name": "Refrigerator",
+"Price": 3000.0,
+"Type": "goods",
+"Weight": 7.0,
+"WeightModifier": 7.0
+},
+"1021": {
 "Image": "res://Textures/Icons/Item21.png",
 "Name": "Clover",
 "Price": 1.0,
 "Type": "special",
-"Weight": 5.0
+"Weight": 1.0,
+"WeightModifier": 0.0
 },
-"9004": {
-"Image": "res://Textures/Icons/Item6.png",
-"Name": "GoldenRing",
-"Price": 10000.0,
+"1022": {
+"Image": "res://Textures/Icons/Item22.png",
+"Name": "FishCan",
+"Price": 5.0,
 "Type": "special",
-"Weight": 0.0
+"Weight": 1.0,
+"WeightModifier": 0.0
+},
+"1023": {
+"Image": "res://Textures/Icons/Item23.png",
+"Name": "BanksiaFlower",
+"Price": 118.0,
+"Type": "special",
+"Weight": 1.0,
+"WeightModifier": 0.0
+},
+"1024": {
+"Image": "res://Textures/Icons/Item24.png",
+"Name": "Axe",
+"Price": 100.0,
+"Type": "init",
+"Weight": 0.0,
+"WeightModifier": 0.0
+},
+"1025": {
+"Image": "res://Textures/Icons/Item25.png",
+"Name": "SilverAxe",
+"Price": 5000.0,
+"Type": "init",
+"Weight": 0.0,
+"WeightModifier": 0.0
+},
+"1026": {
+"Image": "res://Textures/Icons/Item26.png",
+"Name": "GoldenAxe",
+"Price": 10000.0,
+"Type": "init",
+"Weight": 0.0,
+"WeightModifier": 0.0
 }
 }
-header_sizes = [ null, 138.0, 89.0, null, null, null, 277.0, null, null, null, null ]
-id_sizes = [ null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null ]
-columns = 11
-rows = 21
+header_sizes = [ null, 127.0, 89.0, null, null, null, 205.0, 277.0, null, null, null, null ]
+id_sizes = [ null, null, null, null, null, 34.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 30.0, null, null, null, null ]
+columns = 12
+rows = 27
 is_dirty = false

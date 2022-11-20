@@ -18,13 +18,13 @@ func AddItem(_itemId, _itemNum):
 		return true
 	return false
 
-func RemoveItem(_itemInfo):
-	var itemIndex = itemList.find(_itemInfo)
-	itemList.remove(itemIndex)
+func RemoveItem(_itemId):
+	var removeItemIndex = GetItemIndex(_itemId)
+	if removeItemIndex != -1:
+		itemList.remove(removeItemIndex)
 
 func ResetInventory():
 	itemList.clear()
-	AddItem("1001", 1)
 
 func PickItem(_index):
 	return itemList.pop_at(_index)
@@ -38,7 +38,17 @@ func PrintItems():
 
 func GetItemCount():
 	return itemList.size()
-	
+
+func GetItemIndex(_itemId):
+	var itemIndex = -1
+	var curIndex = 0
+	for item in itemList:
+		if item.itemId == _itemId : 
+			itemIndex = curIndex
+			break
+		curIndex += 1
+	return itemIndex
+
 func HasItem(_itemId):
 	var bHas = false
 	for item in itemList:

@@ -1,10 +1,10 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://Scripts/MainHUD.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Scenes/MainScene.jpg" type="Texture" id=2]
 [ext_resource path="res://Textures/UI/Button_Setting2.png" type="Texture" id=3]
 [ext_resource path="res://Textures/UI/Button_Setting1.png" type="Texture" id=4]
-[ext_resource path="res://UIScenes/SettingButton.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/SettingButton.gd" type="Script" id=5]
 [ext_resource path="res://Textures/UI/Frame_Debt.png" type="Texture" id=6]
 [ext_resource path="res://Textures/UI/ProgressBar_Time2.png" type="Texture" id=7]
 [ext_resource path="res://Textures/UI/ProgressBar_Time1.png" type="Texture" id=8]
@@ -17,6 +17,9 @@
 [ext_resource path="res://Textures/UI/Button_Negative1.png" type="Texture" id=15]
 [ext_resource path="res://Textures/UI/Button_Negative2.png" type="Texture" id=16]
 [ext_resource path="res://Textures/Icons/Item1.png" type="Texture" id=17]
+[ext_resource path="res://Scripts/TypewriterLabel.gd" type="Script" id=18]
+[ext_resource path="res://SFX/水面に石投げ2.mp3" type="AudioStream" id=19]
+[ext_resource path="res://SFX/タイプライターで文字を打つ2.mp3" type="AudioStream" id=20]
 
 [sub_resource type="DynamicFontData" id=6]
 font_path = "res://Fonts/tahoma.ttf"
@@ -62,6 +65,22 @@ outline_size = 1
 outline_color = Color( 0.0980392, 0.0862745, 0.0705882, 1 )
 font_data = SubResource( 2 )
 
+[sub_resource type="Animation" id=23]
+resource_name = "AmountChange"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Label:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 0.5, 2 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
+}
+
 [sub_resource type="DynamicFontData" id=4]
 font_path = "res://Fonts/tahomabd.ttf"
 
@@ -88,9 +107,23 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ) ]
 }
 
+[sub_resource type="DynamicFontData" id=12]
+font_path = "res://Fonts/tahomabd.ttf"
+
+[sub_resource type="DynamicFont" id=13]
+size = 40
+font_data = SubResource( 12 )
+
+[sub_resource type="DynamicFontData" id=14]
+font_path = "res://Fonts/tahoma.ttf"
+
+[sub_resource type="DynamicFont" id=15]
+size = 21
+font_data = SubResource( 14 )
+
 [sub_resource type="Animation" id=9]
 resource_name = "Anim_DropItem"
-length = 0.6
+length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("DropItem:position")
 tracks/0/interp = 1
@@ -127,6 +160,60 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.74902 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
+tracks/3/type = "audio"
+tracks/3/path = NodePath("DropItem/DropWater")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 19 )
+} ],
+"times": PoolRealArray( 0.3 )
+}
+
+[sub_resource type="Animation" id=22]
+resource_name = "CharacterHide"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("MainCharacter:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1.1, 1.1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MainCharacter:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MainCharacter:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
 
 [sub_resource type="Animation" id=10]
 resource_name = "CharacterPopup"
@@ -160,12 +247,24 @@ tracks/2/path = NodePath("MainCharacter/NinePatchRect:rect_scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/keys = {
 "times": PoolRealArray( 0, 0.3, 0.4, 0.5 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1e-05, 1e-05 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MainCharacter:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.74902 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -184,6 +283,234 @@ tracks/0/keys = {
 "values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1e-05, 1e-05 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
 }
 
+[sub_resource type="Animation" id=20]
+resource_name = "CharacterPopup"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("MainCharacter:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MainCharacter:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.74902 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MainCharacter/NinePatchRect:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1e-05, 1e-05 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=21]
+resource_name = "CharacterTalk"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("MainCharacter/NinePatchRect:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1e-05, 1e-05 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "DayEnd"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Panel_Day:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "NewDay"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Panel_Day:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=19]
+resource_name = "FadeIn"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("SettingButton:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 39, -84 ), Vector2( 39, 46 ), Vector2( 39, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("DebtAmount:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 120, -99 ), Vector2( 120, 28 ), Vector2( 120, 4 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("DayLeft:rect_position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 817, -93 ), Vector2( 817, 46 ), Vector2( 817, 17 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("HBoxContainer:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 72, 720 ), Vector2( 72, 502 ), Vector2( 72, 511 ) ]
+}
+
+[sub_resource type="Animation" id=18]
+resource_name = "Reset"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Panel_Day:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HBoxContainer:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 72, 720 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("DebtAmount:rect_position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 120, -99 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("DayLeft:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 817, -93 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("SettingButton:rect_position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 39, -84 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("MainCharacter:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("DropItem:self_modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
 [node name="MainHUD" type="CanvasLayer"]
 script = ExtResource( 1 )
 
@@ -193,16 +520,14 @@ anchor_bottom = 1.0
 texture = ExtResource( 2 )
 
 [node name="MainCharacter" type="Sprite" parent="."]
-self_modulate = Color( 1, 1, 1, 0 )
-position = Vector2( 514, 265 )
-scale = Vector2( 1e-05, 1e-05 )
+position = Vector2( 512, 303 )
 texture = ExtResource( 11 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="MainCharacter"]
-margin_left = 29.0
-margin_top = -195.0
-margin_right = 231.0
-margin_bottom = -99.0
+margin_left = 39.763
+margin_top = -248.0
+margin_right = 241.763
+margin_bottom = -152.0
 rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 42, 93 )
 texture = ExtResource( 12 )
@@ -224,12 +549,16 @@ custom_fonts/font = SubResource( 7 )
 text = "What did you fall into the lake ?"
 valign = 1
 autowrap = true
+percent_visible = 0.0
+script = ExtResource( 18 )
+
+[node name="Tween" type="Tween" parent="MainCharacter/NinePatchRect/Label"]
 
 [node name="SettingButton" type="TextureButton" parent="."]
 margin_left = 39.0
-margin_top = 19.0
+margin_top = -84.0
 margin_right = 105.0
-margin_bottom = 83.0
+margin_bottom = -20.0
 rect_pivot_offset = Vector2( 33, 32 )
 texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 3 )
@@ -240,8 +569,12 @@ anims/Button_SettingPressed = SubResource( 1 )
 
 [node name="DebtAmount" type="Control" parent="."]
 margin_left = 120.0
+margin_top = -99.0
 margin_right = 346.0
-margin_bottom = 81.0
+margin_bottom = -18.0
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="TextureRect2" type="TextureRect" parent="DebtAmount"]
 margin_left = 67.0
@@ -269,18 +602,22 @@ margin_left = 50.0
 margin_top = 32.0
 margin_right = 205.0
 margin_bottom = 70.0
+rect_pivot_offset = Vector2( 77, 16 )
 custom_fonts/font = SubResource( 3 )
 text = "-100000000"
 align = 2
 valign = 1
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DebtAmount"]
+anims/AmountChange = SubResource( 23 )
+
 [node name="DayLeft" type="Control" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -207.0
-margin_top = 13.0
+margin_top = -93.0
 margin_right = -49.0
-margin_bottom = 95.0
+margin_bottom = -11.0
 __meta__ = {
 "_edit_group_": true
 }
@@ -321,22 +658,22 @@ margin_right = 20.0
 margin_bottom = 20.0
 
 [node name="HermesBubble1" parent="HermesChoice" instance=ExtResource( 13 )]
-margin_left = -166.0
-margin_top = -79.0
-margin_right = -166.0
-margin_bottom = -79.0
+margin_left = -200.0
+margin_top = -35.0
+margin_right = -200.0
+margin_bottom = -35.0
 
 [node name="HermesBubble2" parent="HermesChoice" instance=ExtResource( 13 )]
-margin_left = 234.0
-margin_top = 4.0
-margin_right = 234.0
-margin_bottom = 4.0
+margin_left = 240.0
+margin_top = -35.0
+margin_right = 240.0
+margin_bottom = -35.0
 
 [node name="HermesBubble3" parent="HermesChoice" instance=ExtResource( 13 )]
-margin_left = 12.0
-margin_top = 125.0
-margin_right = 12.0
-margin_bottom = 125.0
+margin_left = 26.0
+margin_top = 136.0
+margin_right = 26.0
+margin_bottom = 136.0
 
 [node name="NPCChoice" type="Control" parent="."]
 visible = false
@@ -354,7 +691,6 @@ margin_left = -324.0
 margin_top = -64.0
 margin_right = -121.0
 margin_bottom = 24.0
-rect_scale = Vector2( 0.9, 0.9 )
 
 [node name="Button_Negative" parent="NPCChoice" instance=ExtResource( 14 )]
 margin_left = 160.0
@@ -376,9 +712,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -440.0
-margin_top = -85.0
+margin_top = 120.0
 margin_right = 440.0
-margin_bottom = 15.0
+margin_bottom = 220.0
 grow_horizontal = 2
 alignment = 1
 __meta__ = {
@@ -460,13 +796,74 @@ position = Vector2( 500, 300 )
 scale = Vector2( 1e-05, 1e-05 )
 texture = ExtResource( 17 )
 
+[node name="DropWater" type="AudioStreamPlayer2D" parent="DropItem"]
+stream = ExtResource( 19 )
+volume_db = 10.0
+
+[node name="Panel_Day" type="Panel" parent="."]
+self_modulate = Color( 0, 0, 0, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 512.0
+margin_bottom = 300.0
+rect_pivot_offset = Vector2( 512, 300 )
+mouse_filter = 2
+input_pass_on_modal_close_click = false
+
+[node name="Label_Day" type="Label" parent="Panel_Day"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -25.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 13 )
+align = 1
+valign = 1
+script = ExtResource( 18 )
+
+[node name="Tween" type="Tween" parent="Panel_Day/Label_Day"]
+
+[node name="Label_Event" type="Label" parent="Panel_Day"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = 29.5
+margin_bottom = 56.5
+custom_fonts/font = SubResource( 15 )
+align = 1
+valign = 1
+script = ExtResource( 18 )
+
+[node name="Tween" type="Tween" parent="Panel_Day/Label_Event"]
+
+[node name="SFX_Typing" type="AudioStreamPlayer2D" parent="Panel_Day"]
+stream = ExtResource( 20 )
+
 [node name="AnimationPlayer_DropItem" type="AnimationPlayer" parent="."]
 anims/Anim_DropItem = SubResource( 9 )
 
 [node name="AnimationPlayer_MainCharacter" type="AnimationPlayer" parent="."]
 playback_speed = 1.5
+anims/CharacterHide = SubResource( 22 )
 anims/CharacterPopup = SubResource( 10 )
 anims/CharacterTalk = SubResource( 11 )
+
+[node name="AnimationPlayer_Talking" type="AnimationPlayer" parent="."]
+playback_speed = 1.5
+anims/CharacterPopup = SubResource( 20 )
+anims/CharacterTalk = SubResource( 21 )
+
+[node name="AnimationPlayer_Day" type="AnimationPlayer" parent="."]
+anims/DayEnd = SubResource( 17 )
+anims/NewDay = SubResource( 16 )
+
+[node name="AnimationPlayer_HUD" type="AnimationPlayer" parent="."]
+anims/FadeIn = SubResource( 19 )
+anims/Reset = SubResource( 18 )
 
 [connection signal="hide" from="MainCharacter" to="." method="_on_MainCharacter_hide"]
 [connection signal="button_down" from="SettingButton" to="SettingButton" method="_on_TextureButton_button_down"]

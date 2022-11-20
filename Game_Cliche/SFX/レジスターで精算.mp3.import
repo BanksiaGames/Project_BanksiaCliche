@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/レジスターで精算.mp3-c4e5f39c3bac557a46c2cd34d1b01252.mp3str"
+
+[deps]
+
+source_file="res://SFX/レジスターで精算.mp3"
+dest_files=[ "res://.import/レジスターで精算.mp3-c4e5f39c3bac557a46c2cd34d1b01252.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

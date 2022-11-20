@@ -13,19 +13,18 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func _get_event_message():
+	return "The cat's meow, meow, meow, meow~"
+
 func _get_choices():
 	return ["Give a fish can", "Ignore"]
 
-var targetItemId = "9001"
-var bonusItemId = "9004"
+var targetItemId = "1022"
+var bonusItemId = "1006"
 var probability = 30
 var bProcessed = false
-var bEnableEvent = false
 
 func _event_triggered(_player):
-	if not bEnableEvent:
-		bEnableEvent = true
-		return
 	var bTriggered = false
 	var bHasTargetItem = _player.get_node("Inventory").HasItem(targetItemId)
 	if bHasTargetItem:
@@ -39,6 +38,7 @@ func _event_triggered(_player):
 func _process_positive_choice(_player):
 	print("Cat Give You a bonus")
 	bProcessed = true
+	_player.get_node("Inventory").RemoveItem(targetItemId)
 	_player.get_node("Inventory").AddItem(bonusItemId, 1)
 	pass
 
@@ -48,5 +48,4 @@ func _process_negative_choice(_player):
 	
 func _reset_event():
 	bProcessed = false
-	bEnableEvent = false
 	pass

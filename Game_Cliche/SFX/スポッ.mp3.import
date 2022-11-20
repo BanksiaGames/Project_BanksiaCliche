@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/スポッ.mp3-51f4f86323963abc1e35e8f1f5df8734.mp3str"
+
+[deps]
+
+source_file="res://SFX/スポッ.mp3"
+dest_files=[ "res://.import/スポッ.mp3-51f4f86323963abc1e35e8f1f5df8734.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

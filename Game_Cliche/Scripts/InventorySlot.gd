@@ -19,8 +19,7 @@ var itemId = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$TextureRect/TextureRect_Icon.hide()
-	$TextureRect/Label_Price.hide()
+	$AnimationPlayer_Content.play("ContentReset")	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -37,11 +36,14 @@ func _process(delta):
 					
 
 func ShowInteract():
-	if not $TextureRect/TextureRect_Icon.visible:
+	if itemId == "":
 		return
 	$TextureRect.texture = hoverTexture
 	$Interact.show()
 	$AnimationPlayer.play("InventorySlotHovered")
+	$SlotSelected.play()
+	$TextureRect/TextureRect_Icon.show()
+	$TextureRect/Label_Price.show()
 
 func HideInteract():
 	$TextureRect.texture = normalTexture
@@ -80,6 +82,7 @@ func _on_TextureButton_Sell_button_up():
 	bShowInteract = false
 	HideInteract()
 	$SellInteractTimer.start()
+	$InteractClicked.play()
 
 func _on_TextureButton_Throw_button_down():
 	$AnimationPlayer.play("ButtonClicked_Throw")
@@ -89,6 +92,7 @@ func _on_TextureButton_Throw_button_up():
 	bShowInteract = false
 	HideInteract()
 	$ThrowInteractTimer.start()
+	$InteractClicked.play()	
 	
 func RefreshSlot(_itemId):
 	if itemId != _itemId :
@@ -119,7 +123,12 @@ func SetSlotState(_slotState):
 			$Interact/HBoxContainer/TextureButton_Sell.hide()
 			$Interact/HBoxContainer/TextureButton_Throw.show()
 			$Interact/TextureRect_Interact.texture = interactBGTexture2
+			
 
+func _on_AnimationPlayer_Content_animation_started(anim_name):
+	if anim_name == "ContentPopup" :
+		$TextureRect/TextureRect_Icon.show()
+		$TextureRect/Label_Price.show()
 
 func _on_AnimationPlayer_Content_animation_finished(anim_name):
 	if anim_name == "ContentShrinkDown" :
@@ -134,3 +143,5 @@ func _on_SellInteractTimer_timeout():
 func _on_ThrowInteractTimer_timeout():
 	$AnimationPlayer_Content.play("ContentShrinkDown")		
 	emit_signal("onThrowClicked", slotIndex)	
+
+

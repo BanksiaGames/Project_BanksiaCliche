@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/jingles_giveChoice.ogg-d21a195ac38761454faadf7d71fc1cf9.oggstr"
+
+[deps]
+
+source_file="res://SFX/jingles_giveChoice.ogg"
+dest_files=[ "res://.import/jingles_giveChoice.ogg-d21a195ac38761454faadf7d71fc1cf9.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

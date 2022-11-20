@@ -20,3 +20,4 @@ func _on_Button_Positive_button_down():
 
 func _on_Button_Positive_button_up():
 	$AnimationPlayer.play_backwards("Button_Choice")
+	$AudioStreamPlayer2D.play()

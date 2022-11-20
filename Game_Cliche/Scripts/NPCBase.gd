@@ -16,6 +16,9 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func _get_event_message():
+	pass
+
 func _get_choices():
 	pass
 	

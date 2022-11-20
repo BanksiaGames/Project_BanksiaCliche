@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/金額表示.mp3-9ffcf6e6bd87fc62c589319a3006cb0d.mp3str"
+
+[deps]
+
+source_file="res://SFX/金額表示.mp3"
+dest_files=[ "res://.import/金額表示.mp3-9ffcf6e6bd87fc62c589319a3006cb0d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

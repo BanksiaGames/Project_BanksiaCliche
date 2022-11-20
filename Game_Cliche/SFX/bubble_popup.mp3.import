@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/bubble_popup.mp3-a079693ac39a53c3b842b5a5fc05ec0e.mp3str"
+
+[deps]
+
+source_file="res://SFX/bubble_popup.mp3"
+dest_files=[ "res://.import/bubble_popup.mp3-a079693ac39a53c3b842b5a5fc05ec0e.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

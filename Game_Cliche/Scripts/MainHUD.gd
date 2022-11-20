@@ -59,12 +59,14 @@ func RefreshInventorySlotsState(_slotState):
 		var itemSlot : InventorySlot = .get_node(slotName)
 		itemSlot.SetSlotState(_slotState)
 		slotIndex += 1
-	pass
 
 func ShowNPCEvent(_npChoices, _npcBodyTexture):
 	$MainCharacter.texture = _npcBodyTexture
 	$MainCharacter.show()
 	$NPCChoice.show()
+	$MainCharacter/NinePatchRect.rect_scale = Vector2.ZERO		
+	$AnimationPlayer_MainCharacter.play("CharacterPopup")
+	PlayCharacterTalkingBubble("Mew Mew Mew ?????")	
 	$NPCChoice/Button_Positive/Label.text = _npChoices[0]
 	$NPCChoice/Button_Negative/Label.text = _npChoices[1]
 	
@@ -75,16 +77,20 @@ func HideAllCharacterAndChoices():
 	
 func UpdateDebtAmount(_amount):
 	$DebtAmount/Label.text = "-$%d" % _amount
+	$DebtAmount/AnimationPlayer.play("AmountChange")
 	
 func UpdateDayLeft(_dayLeft, _maxDay):
 	$DayLeft/Label.text = str(_dayLeft)
 	$DayLeft/TextureProgress.value = float(_dayLeft) / float(_maxDay) * 100
 	
 func ShowHermesEvent(_choiceItemList):
+	yield(get_tree().create_timer(1.25), "timeout")
 	$MainCharacter.texture = hermesBodyTexture	
 	$MainCharacter.show()
 	$HermesChoice.show()
+	$MainCharacter/NinePatchRect.rect_scale = Vector2.ZERO
 	$AnimationPlayer_MainCharacter.play("CharacterPopup")
+	PlayCharacterTalkingBubble("What did you fall into the lake ?")
 	for i in range(3):
 		var choiceName = "HermesChoice/HermesBubble%d" % (i + 1)
 		var choiceBubble : HermesBubble = .get_node(choiceName)
@@ -103,7 +109,7 @@ func PlayDropItem(_itemId):
 	$AnimationPlayer_DropItem.play("Anim_DropItem")
 
 func _on_MainCharacter_hide():
-	$MainCharacter.scale = Vector2.ZERO
+	#$MainCharacter.scale = Vector2.ZERO
 	$MainCharacter/NinePatchRect.rect_scale = Vector2.ZERO
 	
 func GetHermesBubble(_bubbleIndex):
@@ -112,5 +118,33 @@ func GetHermesBubble(_bubbleIndex):
 	return choiceBubble
 
 func PlayCharacterTalkingBubble(_talkingContent):
-	$MainCharacter/NinePatchRect/Label.text = _talkingContent
-	$AnimationPlayer_MainCharacter.play("CharacterTalk")
+	$MainCharacter/NinePatchRect/Label.StartTyping(_talkingContent, 0.03)
+	$AnimationPlayer_Talking.play("CharacterTalk")
+
+func MoveNewDay(_dayLeft, _dayEvent):
+	$Panel_Day/SFX_Typing.play(1.5)
+	var dayLeftText = "%d Days" % _dayLeft
+	if _dayLeft == 1:
+		dayLeftText = "The Last Day"
+	var typingTime = $Panel_Day/Label_Day.StartTyping(dayLeftText, 0.1)
+	yield(get_tree().create_timer(typingTime), "timeout")	
+	typingTime = $Panel_Day/Label_Event.StartTyping(_dayEvent, 0.075)
+	yield(get_tree().create_timer(typingTime), "timeout")		
+	$AnimationPlayer_Day.play("NewDay")
+	yield(get_tree().create_timer(0.5), "timeout")				
+
+
+func PlayDayEnd():
+	$AnimationPlayer_HUD.play_backwards("FadeIn")		
+	yield(get_tree().create_timer(0.5), "timeout")			
+	$Panel_Day/Label_Day.text = ""
+	$Panel_Day/Label_Event.text = ""
+	$AnimationPlayer_Day.play("DayEnd")
+
+func ResetHUD():
+	$Panel_Day/Label_Day.text = ""
+	$Panel_Day/Label_Event.text = ""
+	$AnimationPlayer_HUD.play("Reset")
+
+func PlayFadeIn():
+	$AnimationPlayer_HUD.play("FadeIn")

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/タイプライターで文字を打つ2.mp3-8430a48aba85ce6a271e3f284b198777.mp3str"
+
+[deps]
+
+source_file="res://SFX/タイプライターで文字を打つ2.mp3"
+dest_files=[ "res://.import/タイプライターで文字を打つ2.mp3-8430a48aba85ce6a271e3f284b198777.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

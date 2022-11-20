@@ -41,6 +41,7 @@ func SellAllItem():
 	
 func RepayDebt(_amount):
 	debtInfo.amountLeft -= _amount
+	$SFX_PayDebt.play()
 
 func GetDebetAmountLeft():
 	return debtInfo.amountLeft
