@@ -230,15 +230,15 @@ func JudgeGameOver():
 	var itemLeft = $Player/Inventory.GetItemCount()
 	var bGameOver = false
 	
-	if itemLeft == 0:
+	if debtLeft <= 0  :
+		bGameOver = true
+		$GameOver/Label_GameOver.text = "You are free man now !!!"
+	elif dayLeft <= 0 :
+		bGameOver = true
+		$GameOver/Label_GameOver.text = "Time to work in underground !!!"
+	elif itemLeft == 0 :
 		bGameOver = true
 		$GameOver/Label_GameOver.text = "No More Item Left !!!"
-	elif debtLeft <= 0:
-		bGameOver = true
-		$GameOver/Label_GameOver.text = "You are free man now !!!"		
-	elif dayLeft <= 0:
-		bGameOver = true
-		$GameOver/Label_GameOver.text = "Time to work in underground !!!"				
 	
 	return bGameOver
 
