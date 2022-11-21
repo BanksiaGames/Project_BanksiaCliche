@@ -1,8 +1,8 @@
 extends NPCBase
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+export var sfx_show : AudioStream
+export var sfx_positive : AudioStream
+export var sfx_negative : AudioStream
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,8 +20,8 @@ func _get_choices():
 	return ["Give a fish can", "Ignore"]
 
 var targetItemId = "1022"
-var bonusItemId = "1006"
-var probability = 30
+var bonusItemId = "1027"
+var probability = 100
 var bProcessed = false
 
 func _event_triggered(_player):
@@ -37,6 +37,7 @@ func _event_triggered(_player):
 
 func _process_positive_choice(_player):
 	print("Cat Give You a bonus")
+	PlaySound(sfx_positive)		
 	bProcessed = true
 	_player.get_node("Inventory").RemoveItem(targetItemId)
 	_player.get_node("Inventory").AddItem(bonusItemId, 1)
@@ -44,8 +45,17 @@ func _process_positive_choice(_player):
 
 func _process_negative_choice(_player):
 	print("Cat walk away ... ")	
+	PlaySound(sfx_negative)	
 	pass
 	
 func _reset_event():
 	bProcessed = false
 	pass
+
+func _npc_show():
+	PlaySound(sfx_show)
+	pass
+
+func PlaySound(_audioStream):
+	$SFX.stream = _audioStream
+	$SFX.play()

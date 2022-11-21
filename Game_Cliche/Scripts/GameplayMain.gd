@@ -10,10 +10,10 @@ var currentChoiceList = []
 
 enum ChoicResult { Nothing, ReturnItem, GiveChoice, Bingo }
 var choiceResultDic = {
-	ChoicResult.Nothing    : 10,
-	ChoicResult.ReturnItem : 30,
-	ChoicResult.GiveChoice : 20,
-	ChoicResult.Bingo      : 40
+	ChoicResult.Nothing    : 5,
+	ChoicResult.ReturnItem : 15,
+	ChoicResult.GiveChoice : 15,
+	ChoicResult.Bingo      : 20
 }
 
 enum GamePhase { Prologue, PickItem, SelectChoice, GameOver }
@@ -230,7 +230,7 @@ func JudgeGameOver():
 	var itemLeft = $Player/Inventory.GetItemCount()
 	var bGameOver = false
 	
-	if debtLeft <= 0  :
+	if debtLeft <= 0 :
 		bGameOver = true
 		$GameOver/Label_GameOver.text = "You are free man now !!!"
 	elif dayLeft <= 0 :
@@ -249,8 +249,9 @@ func TriggerNPCEvent():
 		return true
 	return false
 
-func ProcessNPCEvent(_npc):
+func ProcessNPCEvent(_npc : NPCBase):
 	var npcChoices = _npc._get_choices()
+	_npc._npc_show()
 	$MainHUD.ShowNPCEvent(npcChoices, curNPC.bodyTexture)
 
 func _on_MainHUD_onInventorySlotSellClicked(_itemIndex):

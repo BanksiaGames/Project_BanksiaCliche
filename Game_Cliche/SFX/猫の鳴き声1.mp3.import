@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/猫の鳴き声1.mp3-d81ae0d90c5eeec593dff114ea94af55.mp3str"
+
+[deps]
+
+source_file="res://SFX/猫の鳴き声1.mp3"
+dest_files=[ "res://.import/猫の鳴き声1.mp3-d81ae0d90c5eeec593dff114ea94af55.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

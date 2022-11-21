@@ -122,7 +122,8 @@ func PlayCharacterTalkingBubble(_talkingContent):
 	$AnimationPlayer_Talking.play("CharacterTalk")
 
 func MoveNewDay(_dayLeft, _dayEvent):
-	$Panel_Day/SFX_Typing.play(1.5)
+	#$Panel_Day/SFX_Typing.play(1.5)
+	$Panel_Day/AnimationPlayer_Typing.play("PlayTypingSFX")
 	var dayLeftText = "%d Days" % _dayLeft
 	if _dayLeft == 1:
 		dayLeftText = "The Last Day"

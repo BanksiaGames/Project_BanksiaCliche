@@ -33,3 +33,6 @@ func _process_negative_choice(_player):
 
 func _reset_event():
 	pass
+
+func _npc_show():
+	pass

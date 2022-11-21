@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://Scripts/MainHUD.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Scenes/MainScene.jpg" type="Texture" id=2]
@@ -19,7 +19,7 @@
 [ext_resource path="res://Textures/Icons/Item1.png" type="Texture" id=17]
 [ext_resource path="res://Scripts/TypewriterLabel.gd" type="Script" id=18]
 [ext_resource path="res://SFX/水面に石投げ2.mp3" type="AudioStream" id=19]
-[ext_resource path="res://SFX/タイプライターで文字を打つ2.mp3" type="AudioStream" id=20]
+[ext_resource path="res://SFX/キーボードの早打ち1.mp3" type="AudioStream" id=23]
 
 [sub_resource type="DynamicFontData" id=6]
 font_path = "res://Fonts/tahoma.ttf"
@@ -120,6 +120,36 @@ font_path = "res://Fonts/tahoma.ttf"
 [sub_resource type="DynamicFont" id=15]
 size = 21
 font_data = SubResource( 14 )
+
+[sub_resource type="Animation" id=24]
+resource_name = "PlayTypingSFX"
+length = 7.0
+tracks/0/type = "audio"
+tracks/0/path = NodePath("SFX_Typing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"clips": [ {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource( 23 )
+} ],
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("SFX_Typing:volume_db")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.5, 3.4, 4.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 15.0, 15.0, 10.0, -50.0 ]
+}
 
 [sub_resource type="Animation" id=9]
 resource_name = "Anim_DropItem"
@@ -520,7 +550,10 @@ anchor_bottom = 1.0
 texture = ExtResource( 2 )
 
 [node name="MainCharacter" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0.74902 )
 position = Vector2( 512, 303 )
+scale = Vector2( 1.1, 1.1 )
 texture = ExtResource( 11 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="MainCharacter"]
@@ -791,9 +824,7 @@ margin_right = 880.0
 margin_bottom = 100.0
 
 [node name="DropItem" type="Sprite" parent="."]
-self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 500, 300 )
-scale = Vector2( 1e-05, 1e-05 )
 texture = ExtResource( 17 )
 
 [node name="DropWater" type="AudioStreamPlayer2D" parent="DropItem"]
@@ -841,7 +872,12 @@ script = ExtResource( 18 )
 [node name="Tween" type="Tween" parent="Panel_Day/Label_Event"]
 
 [node name="SFX_Typing" type="AudioStreamPlayer2D" parent="Panel_Day"]
-stream = ExtResource( 20 )
+stream = ExtResource( 23 )
+volume_db = 15.0
+
+[node name="AnimationPlayer_Typing" type="AnimationPlayer" parent="Panel_Day"]
+playback_speed = 1.5
+anims/PlayTypingSFX = SubResource( 24 )
 
 [node name="AnimationPlayer_DropItem" type="AnimationPlayer" parent="."]
 anims/Anim_DropItem = SubResource( 9 )

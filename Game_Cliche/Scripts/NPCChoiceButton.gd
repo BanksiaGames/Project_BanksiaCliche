@@ -20,4 +20,13 @@ func _on_Button_Positive_button_down():
 
 func _on_Button_Positive_button_up():
 	$AnimationPlayer.play_backwards("Button_Choice")
-	$AudioStreamPlayer2D.play()
+	$SFX_Clicked.play()
+
+
+func _on_Button_Positive_mouse_entered():
+	$Label.rect_position = Vector2(0, 10)
+	$SFX_Hover.play()
+
+func _on_Button_Positive_mouse_exited():
+	$Label.rect_position = Vector2(0, 16.5)	
+	pass # Replace with function body.

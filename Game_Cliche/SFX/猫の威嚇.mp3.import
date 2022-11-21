@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/猫の威嚇.mp3-c071308d248eafe5544e29cb748a10ef.mp3str"
+
+[deps]
+
+source_file="res://SFX/猫の威嚇.mp3"
+dest_files=[ "res://.import/猫の威嚇.mp3-c071308d248eafe5544e29cb748a10ef.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
