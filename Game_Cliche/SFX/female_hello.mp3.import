@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/female_hello.mp3-857d8f7eb4bd612e265162b293487919.mp3str"
+
+[deps]
+
+source_file="res://SFX/female_hello.mp3"
+dest_files=[ "res://.import/female_hello.mp3-857d8f7eb4bd612e265162b293487919.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

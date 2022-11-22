@@ -6,11 +6,11 @@ export var sfx_negative : AudioStream
 
 var targetItemId = "1022" # Fish Can
 var bonusItemId = "1027"  # Diamond Ring
-var probability = 100
+var probability = 30
 var bProcessed = false
 
 func _get_event_message():
-	return "The cat's meow, meow, meow, meow~"
+	return "The cat's meow, meow, meow, meow ~~~~"
 
 func _get_choices():
 	return ["Give a fish can", "Ignore"]

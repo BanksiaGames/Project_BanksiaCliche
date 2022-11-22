@@ -3,6 +3,7 @@ extends Node
 class_name Player
 
 signal OnDebtChanged
+signal OnDayLeftChanged
 
 var debtInfo = DebtInfo.new(10, 1000)
 var itemConfig = GDSheets.sheet("Items")
@@ -13,6 +14,11 @@ func Reborn(_dayLeft, _amountLeft):
 
 func MoveNextDay():
 	debtInfo.dayLeft -= 1
+	emit_signal("OnDayLeftChanged")
+
+func BackToPast(_day):
+	debtInfo.dayLeft += _day
+	emit_signal("OnDayLeftChanged")
 	
 func GetDayLeft():
 	return debtInfo.dayLeft

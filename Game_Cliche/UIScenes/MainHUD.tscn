@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://Scripts/MainHUD.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Scenes/MainScene.jpg" type="Texture" id=2]
@@ -90,6 +90,22 @@ outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_char = 3
 font_data = SubResource( 4 )
+
+[sub_resource type="Animation" id=25]
+resource_name = "DayChange"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Label:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 2, 2 ), Vector2( 1, 1 ) ]
+}
 
 [sub_resource type="Animation" id=8]
 resource_name = "Button_Choice"
@@ -668,17 +684,24 @@ radial_center_offset = Vector2( 0, -40 )
 
 [node name="Label" type="Label" parent="DayLeft"]
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-margin_left = -33.5
-margin_top = -8.0
-margin_right = 33.5
+anchor_bottom = 0.5
+margin_left = -26.5
+margin_top = -48.0
+margin_right = 26.5
+margin_bottom = 2.00002
+rect_pivot_offset = Vector2( 26, 25 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 1
 custom_fonts/font = SubResource( 5 )
-text = "32"
+text = "99"
 align = 1
 valign = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DayLeft"]
+anims/DayChange = SubResource( 25 )
 
 [node name="HermesChoice" type="Control" parent="."]
 anchor_left = 0.5

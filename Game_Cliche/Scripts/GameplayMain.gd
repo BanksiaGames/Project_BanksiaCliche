@@ -59,8 +59,7 @@ func StartNewGame():
 func StartNewDay():
 	curDayPass += 1
 	curDayChance = maxDayChance
-	$Player.MoveNextDay()	
-	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
+	$Player.MoveNextDay()
 	
 	if $Player.GetDayLeft() == 0:
 		$Player.SellAllItem()
@@ -97,8 +96,13 @@ func CreateRandomChoices(_firstChoice):
 		var itemWeight = int(itemConfig[itemId]["Weight"])
 		var itemWeightModifier = int(itemConfig[itemId]["WeightModifier"])
 		var itemType = itemConfig[itemId]["Type"]
+		
 		if itemType == firstChoiceType:
 			itemWeight = itemWeight + itemWeightModifier
+			
+		if itemType == "unique" && $Player/Inventory.HasItem(itemId) :
+			itemWeight = 0
+		
 		if itemId != _firstChoice and !giftStoryItem.has(itemId):
 			itemPool.append({id = itemId, weight = itemWeight})
 			itemTotalWeight += itemWeight
@@ -266,6 +270,10 @@ func TriggerNPCEvent():
 	if $Woman._event_triggered($Player):
 		curNPC = $Woman
 		return true
+		
+	if $Elf._event_triggered($Player):
+		curNPC = $Elf
+		return true
 	
 	return false
 
@@ -384,10 +392,11 @@ func _on_StartGameTimer_timeout():
 
 func _on_Player_OnDebtChanged():
 	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())	
-	
-	yield(get_tree().create_timer(0.5), "timeout")		
-	
+	yield(get_tree().create_timer(0.5), "timeout")
 	if JudgeGameOver():
-		SetGamePhase(GamePhase.GameOver)		
+		SetGamePhase(GamePhase.GameOver)
 		return
+
+func _on_Player_OnDayLeftChanged():
+	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
 	

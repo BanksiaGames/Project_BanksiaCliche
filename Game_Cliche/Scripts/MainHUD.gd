@@ -66,9 +66,9 @@ func ShowNPCEvent(_npChoices, _npcBodyTexture, _npcMessage):
 	$NPCChoice.show()
 	$MainCharacter/NinePatchRect.rect_scale = Vector2.ZERO		
 	$AnimationPlayer_MainCharacter.play("CharacterPopup")
-	PlayCharacterTalkingBubble(_npcMessage)	
-	$NPCChoice/Button_Positive/Label.text = _npChoices[0]
-	$NPCChoice/Button_Negative/Label.text = _npChoices[1]
+	PlayCharacterTalkingBubble(_npcMessage)
+	$NPCChoice/Button_Positive.SetText(_npChoices[0])
+	$NPCChoice/Button_Negative.SetText(_npChoices[1])
 	
 func HideAllCharacterAndChoices():
 	$MainCharacter.hide()
@@ -82,6 +82,7 @@ func UpdateDebtAmount(_amount):
 func UpdateDayLeft(_dayLeft, _maxDay):
 	$DayLeft/Label.text = str(_dayLeft)
 	$DayLeft/TextureProgress.value = float(_dayLeft) / float(_maxDay) * 100
+	$DayLeft/AnimationPlayer.play("DayChange")
 	
 func ShowHermesEvent(_choiceItemList):
 	yield(get_tree().create_timer(1.25), "timeout")
