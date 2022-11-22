@@ -12,8 +12,8 @@ var giftStoryItem = []
 enum ChoicResult { Nothing, ReturnItem, GiveChoice, Bingo }
 var choiceResultDic = {
 	ChoicResult.Nothing    : 5,
-	ChoicResult.ReturnItem : 15,
-	ChoicResult.GiveChoice : 15,
+	ChoicResult.ReturnItem : 10,
+	ChoicResult.GiveChoice : 20,
 	ChoicResult.Bingo      : 20
 }
 
