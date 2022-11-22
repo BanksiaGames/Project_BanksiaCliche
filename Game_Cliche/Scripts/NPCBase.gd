@@ -11,7 +11,6 @@ export var bodyTexture : Texture
 func _ready():
 	pass # Replace with function body.
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -20,6 +19,15 @@ func _get_event_message():
 	pass
 
 func _get_choices():
+	pass
+
+func _get_show_message():
+	pass
+
+func _get_positive_message():
+	pass
+
+func _get_negative_message():
 	pass
 	
 func _event_triggered(_player):

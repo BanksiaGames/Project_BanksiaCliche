@@ -7,6 +7,7 @@ export var sfx_bingo : AudioStream
 
 var itemConfig = GDSheets.sheet("Items")
 var currentChoiceList = []
+var giftStoryItem = []
 
 enum ChoicResult { Nothing, ReturnItem, GiveChoice, Bingo }
 var choiceResultDic = {
@@ -38,6 +39,8 @@ func _on_button_newgame_clicked():
 
 func StartNewGame():
 	curDayChance = maxDayChance
+	currentChoiceList.clear()
+	giftStoryItem.clear()
 	$Player.Reborn(maxDayLeft, maxDebtAmountLeft)
 	$Cat._reset_event()
 	$MainHUD.show()
@@ -80,6 +83,7 @@ func StartNewDay():
 	if curNPC != null:
 		ProcessNPCEvent(curNPC)
 
+
 func CreateRandomChoices(_firstChoice):
 	var choiceList = []
 	
@@ -95,7 +99,7 @@ func CreateRandomChoices(_firstChoice):
 		var itemType = itemConfig[itemId]["Type"]
 		if itemType == firstChoiceType:
 			itemWeight = itemWeight + itemWeightModifier
-		if itemId != _firstChoice:
+		if itemId != _firstChoice and !giftStoryItem.has(itemId):
 			itemPool.append({id = itemId, weight = itemWeight})
 			itemTotalWeight += itemWeight
 	
@@ -141,6 +145,10 @@ func JudgePrologueChoice(_index):
 		choiceResult = ChoicResult.Bingo
 	return choiceResult
 
+func IsStoryItem(_itemId):
+	var itemType = itemConfig[_itemId]["Type"]
+	return itemType == "story"
+
 func ProcessChoiceResult(choiceIndex, result):
 	match result:
 		ChoicResult.Nothing:
@@ -153,6 +161,8 @@ func ProcessChoiceResult(choiceIndex, result):
 		ChoicResult.ReturnItem:
 			print("ReturnItem")
 			$Player/Inventory.AddItem(currentChoiceList[2], 1)
+			if(IsStoryItem(currentChoiceList[2])):
+				giftStoryItem.append(currentChoiceList[2])
 			# Play Bubble 3 Move to Inventory
 			for i in range(3):
 				# Play Bubble i explode
@@ -167,6 +177,8 @@ func ProcessChoiceResult(choiceIndex, result):
 		ChoicResult.GiveChoice:
 			print("GiveChoice")
 			$Player/Inventory.AddItem(currentChoiceList[choiceIndex], 1)
+			if(IsStoryItem(currentChoiceList[choiceIndex])):
+				giftStoryItem.append(currentChoiceList[choiceIndex])
 			# Play Bubble choiceIndex Move to Inventory
 			for i in range(3):
 				# Play Bubble i explode
@@ -195,6 +207,8 @@ func ProcessChoiceResult(choiceIndex, result):
 				
 			for choice in currentChoiceList:
 				if $Player/Inventory.AddItem(choice, 1) :
+					if(IsStoryItem(choice)):
+						giftStoryItem.append(choice)
 					var bubble : HermesBubble = $MainHUD.GetHermesBubble(bubbleIndex)
 					bubble.SetBubbleVolume(bubbleGainVolume)					
 					bubble.PlayGain()
@@ -244,15 +258,21 @@ func JudgeGameOver():
 
 func TriggerNPCEvent():
 	curNPC = null
+	
 	if $Cat._event_triggered($Player):
 		curNPC = $Cat
 		return true
+	
+	if $Woman._event_triggered($Player):
+		curNPC = $Woman
+		return true
+	
 	return false
 
 func ProcessNPCEvent(_npc : NPCBase):
 	var npcChoices = _npc._get_choices()
 	_npc._npc_show()
-	$MainHUD.ShowNPCEvent(npcChoices, curNPC.bodyTexture)
+	$MainHUD.ShowNPCEvent(npcChoices, curNPC.bodyTexture, curNPC._get_show_message())
 
 func _on_MainHUD_onInventorySlotSellClicked(_itemIndex):
 	if $Player/Inventory.GetItemCount() == 1 and GetGamePhase() == GamePhase.PickItem:
@@ -267,8 +287,6 @@ func _on_MainHUD_onInventorySlotSellClicked(_itemIndex):
 		else:
 			$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.Normal)
 	
-	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())
-
 func _on_MainHUD_onInventorySlotThrowClicked(_itemIndex):
 	SetGamePhase(GamePhase.SelectChoice)
 	
@@ -337,10 +355,10 @@ func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 func _on_MainHUD_onNpcChoiceSelected(_bPositive):
 	if _bPositive:
 		curNPC._process_positive_choice($Player)
-		$MainHUD.PlayCharacterTalkingBubble("????????")
+		$MainHUD.PlayCharacterTalkingBubble(curNPC._get_positive_message())
 	else:
 		curNPC._process_negative_choice($Player)
-		$MainHUD.PlayCharacterTalkingBubble("%%%%%%%%")		
+		$MainHUD.PlayCharacterTalkingBubble(curNPC._get_negative_message())		
 	
 	$MainHUD/NPCChoice.hide()
 	
@@ -363,3 +381,13 @@ func _on_GameOverTimer_timeout():
 
 func _on_StartGameTimer_timeout():
 	StartNewGame()
+
+func _on_Player_OnDebtChanged():
+	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())	
+	
+	yield(get_tree().create_timer(0.5), "timeout")		
+	
+	if JudgeGameOver():
+		SetGamePhase(GamePhase.GameOver)		
+		return
+	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/GameplayMain.gd" type="Script" id=2]
@@ -15,6 +15,9 @@
 [ext_resource path="res://SFX/猫の威嚇.mp3" type="AudioStream" id=13]
 [ext_resource path="res://SFX/猫の鳴き声2.mp3" type="AudioStream" id=14]
 [ext_resource path="res://SFX/猫の鳴き声1.mp3" type="AudioStream" id=15]
+[ext_resource path="res://Scenes/NPCWoman.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Scripts/NPCWoman.gd" type="Script" id=17]
+[ext_resource path="res://Textures/Characters/Woman.png" type="Texture" id=18]
 
 [node name="GameplayMain" type="Node"]
 script = ExtResource( 2 )
@@ -37,6 +40,13 @@ sfx_show = ExtResource( 15 )
 sfx_positive = ExtResource( 14 )
 sfx_negative = ExtResource( 13 )
 
+[node name="Woman" parent="." instance=ExtResource( 16 )]
+script = ExtResource( 17 )
+bodyTexture = ExtResource( 18 )
+sfx_show = null
+sfx_positive = null
+sfx_negative = null
+
 [node name="GameOverTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -49,6 +59,7 @@ volume_db = -10.0
 
 [node name="SFX_Jingles" type="AudioStreamPlayer2D" parent="."]
 
+[connection signal="OnDebtChanged" from="Player" to="." method="_on_Player_OnDebtChanged"]
 [connection signal="onHermesBubbleClicked" from="MainHUD" to="." method="_on_MainHUD_onHermesBubbleClicked"]
 [connection signal="onInventorySlotSellClicked" from="MainHUD" to="." method="_on_MainHUD_onInventorySlotSellClicked"]
 [connection signal="onInventorySlotThrowClicked" from="MainHUD" to="." method="_on_MainHUD_onInventorySlotThrowClicked"]

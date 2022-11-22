@@ -4,25 +4,25 @@ export var sfx_show : AudioStream
 export var sfx_positive : AudioStream
 export var sfx_negative : AudioStream
 
-var targetItemId = "1022" # Fish Can
-var bonusItemId = "1027"  # Diamond Ring
+var targetItemId = "1027" #Diamond Ring
+var bonusAmount = 250000
 var probability = 100
 var bProcessed = false
 
 func _get_event_message():
-	return "The cat's meow, meow, meow, meow~"
+	return "A woman is walking toward me"
 
 func _get_choices():
-	return ["Give a fish can", "Ignore"]
-
+	return ["Give her the Diamond Ring", "Ignore"]
+	
 func _get_show_message():
-	return "Meow Meow Meow ???????"
+	return "Have you found my diamond ring ?"
 
 func _get_positive_message():
-	return "> W < Meow Meow"
+	return "Thanks, please let me pay your debt"
 
 func _get_negative_message():
-	return "O W O @#$@#$#@$#@"
+	return "Hmmmm, please tell me if your found that"
 
 func _event_triggered(_player):
 	var bTriggered = false
@@ -35,27 +35,18 @@ func _event_triggered(_player):
 		bTriggered = false
 	return bTriggered
 
-func _process_positive_choice(_player):
-	print("Cat Give You a bonus")
-	PlaySound(sfx_positive)		
+func _process_positive_choice(_player : Player):
+	print("Woman Pay Your Debt")
 	bProcessed = true
 	_player.get_node("Inventory").RemoveItem(targetItemId)
-	_player.get_node("Inventory").AddItem(bonusItemId, 1)
+	_player.RepayDebt(bonusAmount)
+	
 	pass
 
 func _process_negative_choice(_player):
-	print("Cat walk away ... ")	
-	PlaySound(sfx_negative)	
+	print("Woman walk away ... ")	
 	pass
 	
 func _reset_event():
 	bProcessed = false
 	pass
-
-func _npc_show():
-	PlaySound(sfx_show)
-	pass
-
-func PlaySound(_audioStream):
-	$SFX.stream = _audioStream
-	$SFX.play()

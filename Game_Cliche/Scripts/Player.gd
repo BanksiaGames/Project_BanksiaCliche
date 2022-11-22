@@ -1,20 +1,11 @@
 extends Node
 
+class_name Player
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+signal OnDebtChanged
 
 var debtInfo = DebtInfo.new(10, 1000)
 var itemConfig = GDSheets.sheet("Items")
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 func Reborn(_dayLeft, _amountLeft):
 	debtInfo = DebtInfo.new(_dayLeft, _amountLeft)
@@ -42,6 +33,7 @@ func SellAllItem():
 func RepayDebt(_amount):
 	debtInfo.amountLeft -= _amount
 	$SFX_PayDebt.play()
+	emit_signal("OnDebtChanged")
 
 func GetDebetAmountLeft():
 	return debtInfo.amountLeft

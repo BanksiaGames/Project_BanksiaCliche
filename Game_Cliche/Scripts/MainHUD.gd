@@ -60,13 +60,13 @@ func RefreshInventorySlotsState(_slotState):
 		itemSlot.SetSlotState(_slotState)
 		slotIndex += 1
 
-func ShowNPCEvent(_npChoices, _npcBodyTexture):
+func ShowNPCEvent(_npChoices, _npcBodyTexture, _npcMessage):
 	$MainCharacter.texture = _npcBodyTexture
 	$MainCharacter.show()
 	$NPCChoice.show()
 	$MainCharacter/NinePatchRect.rect_scale = Vector2.ZERO		
 	$AnimationPlayer_MainCharacter.play("CharacterPopup")
-	PlayCharacterTalkingBubble("Mew Mew Mew ?????")	
+	PlayCharacterTalkingBubble(_npcMessage)	
 	$NPCChoice/Button_Positive/Label.text = _npChoices[0]
 	$NPCChoice/Button_Negative/Label.text = _npChoices[1]
 	
