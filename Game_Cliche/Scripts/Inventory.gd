@@ -6,6 +6,7 @@ extends Node
 # var b = "text"
 
 var itemList = []
+var itemConfig = GDSheets.sheet("Items")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -38,6 +39,18 @@ func PrintItems():
 
 func GetItemCount():
 	return itemList.size()
+
+func GetItemCountOfType(_itemType):
+	var itemCount = 0
+	for item in itemList:
+		var itemType = itemConfig[item.itemId]["Type"]
+		if itemType == _itemType :
+			itemCount += 1
+	return itemCount
+
+func RandomlyPickItemOfType(_itemType):
+	var targetItemList = []
+	
 
 func GetItemIndex(_itemId):
 	var itemIndex = -1
