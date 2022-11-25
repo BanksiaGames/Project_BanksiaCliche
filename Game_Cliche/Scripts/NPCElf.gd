@@ -6,7 +6,7 @@ export var sfx_negative : AudioStream
 
 var targetItemId = "1021" # Clover
 var bonusDay = 3
-var probability = 100
+var probability = 30
 
 func _get_event_message():
 	return "........."
@@ -35,8 +35,8 @@ func _event_triggered(_player):
 func _process_positive_choice(_player : Player):
 	print("Time Return")
 	#PlaySound(sfx_positive)
-	_player.get_node("Inventory").RemoveItem(targetItemId)
-	_player.BackToPast(bonusDay)
+	if _player.GetInventory().RemoveItemWithId(targetItemId):
+		_player.BackToPast(bonusDay)
 
 func _process_negative_choice(_player):
 	print("Elf Disappar ... ")

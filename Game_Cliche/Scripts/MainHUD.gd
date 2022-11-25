@@ -32,6 +32,7 @@ func _on_select_negative_choice():
 func _on_bubble_clicked(_bubbleIndex):
 	print("_on_bubble_clicked %d" % _bubbleIndex)
 	emit_signal("onHermesBubbleClicked", _bubbleIndex)
+	DisableBubbles(true)
 
 func _on_sell_clicked(_slotIndex):
 	print("_on_sell_clicked %d" % _slotIndex)
@@ -123,7 +124,6 @@ func PlayCharacterTalkingBubble(_talkingContent):
 	$AnimationPlayer_Talking.play("CharacterTalk")
 
 func MoveNewDay(_dayLeft, _dayEvent):
-	#$Panel_Day/SFX_Typing.play(1.5)
 	$Panel_Day/AnimationPlayer_Typing.play("PlayTypingSFX")
 	var dayLeftText = "%d Days" % _dayLeft
 	if _dayLeft == 1:
@@ -134,7 +134,6 @@ func MoveNewDay(_dayLeft, _dayEvent):
 	yield(get_tree().create_timer(typingTime), "timeout")		
 	$AnimationPlayer_Day.play("NewDay")
 	yield(get_tree().create_timer(0.5), "timeout")				
-
 
 func PlayDayEnd():
 	$AnimationPlayer_HUD.play_backwards("FadeIn")		
@@ -150,3 +149,8 @@ func ResetHUD():
 
 func PlayFadeIn():
 	$AnimationPlayer_HUD.play("FadeIn")
+
+func DisableBubbles(_bDisable):
+	$HermesChoice/HermesBubble1/TextureButton.disabled = _bDisable
+	$HermesChoice/HermesBubble2/TextureButton.disabled = _bDisable
+	$HermesChoice/HermesBubble3/TextureButton.disabled = _bDisable

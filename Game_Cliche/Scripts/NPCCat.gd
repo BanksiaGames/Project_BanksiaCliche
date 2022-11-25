@@ -35,12 +35,12 @@ func _event_triggered(_player):
 		bTriggered = false
 	return bTriggered
 
-func _process_positive_choice(_player):
+func _process_positive_choice(_player : Player):
 	print("Cat Give You a bonus")
 	PlaySound(sfx_positive)		
 	bProcessed = true
-	_player.get_node("Inventory").RemoveItem(targetItemId)
-	_player.get_node("Inventory").AddItem(bonusItemId, 1)
+	var itemIndex = _player.GetInventory().GetItemIndex(targetItemId)
+	_player.GetInventory().ReplaceItem(itemIndex, bonusItemId)
 	pass
 
 func _process_negative_choice(_player):

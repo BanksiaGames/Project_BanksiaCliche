@@ -17,7 +17,7 @@ var choiceResultDic = {
 	ChoicResult.Bingo      : 20
 }
 
-enum GamePhase { Prologue, PickItem, SelectChoice, GameOver }
+enum GamePhase { Prologue, PickItem, SelectChoice, JudgeChoice, GameOver }
 var curGamePhase = GamePhase.Prologue
 
 var curNPC : NPCBase
@@ -27,34 +27,33 @@ var maxDayChance = 3
 var curDayChance = 3
 var curDayPass = 0
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
 	$GameOver/ButtonNewGame.connect("button_up", self, "_on_button_newgame_clicked")
-	$StartGameTimer.start()
-	
-func _on_button_newgame_clicked():
-	$GameOver.hide()
+	$Player.GetInventory().connect("OnInventoryChanged", self, "_on_player_inventory_changed")
 	$StartGameTimer.start()
 
 func StartNewGame():
+	SetGamePhase(GamePhase.Prologue)	
 	curDayChance = maxDayChance
 	currentChoiceList.clear()
 	giftStoryItem.clear()
 	$Player.Reborn(maxDayLeft, maxDebtAmountLeft)
-	$Cat._reset_event()
+	ResetNPCEvent()
 	$MainHUD.show()
 	$MainHUD.ResetHUD()
 	$MainHUD.MoveNewDay(maxDayLeft, "My Last Month .....")
-	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
-	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())
-	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())	
-	SetGamePhase(GamePhase.Prologue)
 	currentChoiceList = ["1026", "1025", "1024"]
 	yield(get_tree().create_timer(4), "timeout")
 	$Music.play()	
 	$MainHUD.PlayDropItem("1024")
 	$MainHUD.ShowHermesEvent(currentChoiceList)	
+
+func ResetNPCEvent():
+	$Cat._reset_event()
+	$Woman._reset_event()
+	$Elf._reset_event()
+	$Robber._reset_event()
 
 func StartNewDay():
 	curDayPass += 1
@@ -65,7 +64,7 @@ func StartNewDay():
 		$Player.SellAllItem()
 	
 	if JudgeGameOver():
-		SetGamePhase(GamePhase.GameOver)		
+		SetGamePhase(GamePhase.GameOver)
 		return
 	
 	var dayEvent = "Nothing Happened ......"
@@ -78,10 +77,9 @@ func StartNewDay():
 	$MainHUD.MoveNewDay($Player.GetDayLeft(), dayEvent)
 	yield(get_tree().create_timer(1), "timeout")
 	$MainHUD.PlayFadeIn()
-	yield(get_tree().create_timer(3), "timeout")
+	yield(get_tree().create_timer(2.75), "timeout")
 	if curNPC != null:
 		ProcessNPCEvent(curNPC)
-
 
 func CreateRandomChoices(_firstChoice):
 	var choiceList = []
@@ -224,11 +222,12 @@ func ProcessChoiceResult(choiceIndex, result):
 				bubbleIndex += 1
 
 func SetGamePhase(_phase):
+	if curGamePhase == _phase:
+		return false
 	curGamePhase = _phase
 	match curGamePhase:
 		GamePhase.GameOver:
 			$Music.stop()
-			$MainHUD.PlayDayEnd()
 			$GameOverTimer.start()
 		GamePhase.PickItem:
 			if $Player/Inventory.GetItemCount() == 1:
@@ -237,7 +236,7 @@ func SetGamePhase(_phase):
 				$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.Normal)
 		GamePhase.SelectChoice:
 			$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.SellOnly)
-			
+	return true
 
 func GetGamePhase():
 	return curGamePhase
@@ -274,6 +273,10 @@ func TriggerNPCEvent():
 	if $Elf._event_triggered($Player):
 		curNPC = $Elf
 		return true
+		
+	if $Robber._event_triggered($Player):
+		curNPC = $Robber
+		return true
 	
 	return false
 
@@ -281,6 +284,10 @@ func ProcessNPCEvent(_npc : NPCBase):
 	var npcChoices = _npc._get_choices()
 	_npc._npc_show()
 	$MainHUD.ShowNPCEvent(npcChoices, curNPC.bodyTexture, curNPC._get_show_message())
+
+func PlayJingles(_stream):
+	$SFX_Jingles.stream = _stream
+	$SFX_Jingles.play()
 
 func _on_MainHUD_onInventorySlotSellClicked(_itemIndex):
 	if $Player/Inventory.GetItemCount() == 1 and GetGamePhase() == GamePhase.PickItem:
@@ -296,14 +303,17 @@ func _on_MainHUD_onInventorySlotSellClicked(_itemIndex):
 			$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.Normal)
 	
 func _on_MainHUD_onInventorySlotThrowClicked(_itemIndex):
-	SetGamePhase(GamePhase.SelectChoice)
+	if not SetGamePhase(GamePhase.SelectChoice):
+		return
 	
 	if $Player/Inventory.GetItemCount() == 0:
 		print("Nothing Can Throw !!")
 		return
 		
-	var itemInfo = $Player/Inventory.PickItem(_itemIndex)
-	currentChoiceList = CreateRandomChoices(itemInfo.itemId)
+	var itemInfo = $Player/Inventory.GetItem(_itemIndex)
+	if itemInfo.itemId != "":
+		currentChoiceList = CreateRandomChoices(itemInfo.itemId)
+		$Player.GetInventory().RemoveItem(_itemIndex)
 	
 	yield(get_tree().create_timer(0.2), "timeout")
 	
@@ -311,14 +321,17 @@ func _on_MainHUD_onInventorySlotThrowClicked(_itemIndex):
 	$MainHUD.PlayDropItem(itemInfo.itemId)
 	$MainHUD.ShowHermesEvent(currentChoiceList)
 
-func PlayJingles(_stream):
-	$SFX_Jingles.stream = _stream
-	$SFX_Jingles.play()
-
 func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 	var result = JudgeChoice()
-	if GetGamePhase() == GamePhase.Prologue:
+	
+	var bProcessPrologue = GetGamePhase() == GamePhase.Prologue
+	
+	if bProcessPrologue:
 		result = JudgePrologueChoice(_bubbleIndex)
+	
+	var processPhase = SetGamePhase(GamePhase.JudgeChoice)
+	if processPhase == false :
+		return
 			
 	match result:
 		ChoicResult.Nothing:
@@ -340,7 +353,7 @@ func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 	
 	yield(get_tree().create_timer(1), "timeout")	
 	
-	if GetGamePhase() == GamePhase.Prologue:
+	if bProcessPrologue:
 		$MainHUD.PlayFadeIn()
 	
 	if JudgeGameOver():
@@ -361,6 +374,12 @@ func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 		StartNewDay()
 
 func _on_MainHUD_onNpcChoiceSelected(_bPositive):
+	if GetGamePhase() != GamePhase.SelectChoice:
+		return
+		
+	if not SetGamePhase(GamePhase.JudgeChoice):
+		return
+		
 	if _bPositive:
 		curNPC._process_positive_choice($Player)
 		$MainHUD.PlayCharacterTalkingBubble(curNPC._get_positive_message())
@@ -384,6 +403,8 @@ func _on_MainHUD_onNpcChoiceSelected(_bPositive):
 		StartNewDay()
 
 func _on_GameOverTimer_timeout():
+	$MainHUD.PlayDayEnd()
+	yield(get_tree().create_timer(1), "timeout")
 	$MainHUD.hide()
 	$GameOver.show()
 
@@ -399,4 +420,19 @@ func _on_Player_OnDebtChanged():
 
 func _on_Player_OnDayLeftChanged():
 	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
+
+func _on_Player_OnPlayerReborn():
+	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
+	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())	
+
+func _on_button_newgame_clicked():
+	$GameOver.hide()
+	$StartGameTimer.start()
+
+func _on_player_inventory_changed():
+	yield(get_tree().create_timer(1), "timeout")	
+	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())
 	
+func _on_Robber_OnRobberNegativeChoice():
+	curDayChance = 0
+	$Player.BackToPast(-3)

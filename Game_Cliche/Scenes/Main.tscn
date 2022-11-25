@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/GameplayMain.gd" type="Script" id=2]
@@ -24,6 +24,7 @@
 [ext_resource path="res://Scenes/NPCElf.tscn" type="PackedScene" id=22]
 [ext_resource path="res://Scenes/NPCRobber.tscn" type="PackedScene" id=23]
 [ext_resource path="res://Scripts/NPCRobber.gd" type="Script" id=24]
+[ext_resource path="res://Textures/Characters/Robber.png" type="Texture" id=25]
 
 [node name="GameplayMain" type="Node"]
 script = ExtResource( 2 )
@@ -57,7 +58,7 @@ sfx_negative = ExtResource( 20 )
 
 [node name="Robber" parent="." instance=ExtResource( 23 )]
 script = ExtResource( 24 )
-bodyTexture = null
+bodyTexture = ExtResource( 25 )
 
 [node name="GameOverTimer" type="Timer" parent="."]
 one_shot = true
@@ -73,9 +74,11 @@ volume_db = -10.0
 
 [connection signal="OnDayLeftChanged" from="Player" to="." method="_on_Player_OnDayLeftChanged"]
 [connection signal="OnDebtChanged" from="Player" to="." method="_on_Player_OnDebtChanged"]
+[connection signal="OnPlayerReborn" from="Player" to="." method="_on_Player_OnPlayerReborn"]
 [connection signal="onHermesBubbleClicked" from="MainHUD" to="." method="_on_MainHUD_onHermesBubbleClicked"]
 [connection signal="onInventorySlotSellClicked" from="MainHUD" to="." method="_on_MainHUD_onInventorySlotSellClicked"]
 [connection signal="onInventorySlotThrowClicked" from="MainHUD" to="." method="_on_MainHUD_onInventorySlotThrowClicked"]
 [connection signal="onNpcChoiceSelected" from="MainHUD" to="." method="_on_MainHUD_onNpcChoiceSelected"]
+[connection signal="OnRobberNegativeChoice" from="Robber" to="." method="_on_Robber_OnRobberNegativeChoice"]
 [connection signal="timeout" from="GameOverTimer" to="." method="_on_GameOverTimer_timeout"]
 [connection signal="timeout" from="StartGameTimer" to="." method="_on_StartGameTimer_timeout"]

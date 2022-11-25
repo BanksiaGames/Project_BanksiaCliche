@@ -39,7 +39,7 @@ func _process_positive_choice(_player : Player):
 	print("Woman Pay Your Debt")
 	bProcessed = true
 	PlaySound(sfx_positive)
-	_player.get_node("Inventory").RemoveItem(targetItemId)
+	_player.GetInventory().RemoveItemWithId(targetItemId)
 	_player.RepayDebt(bonusAmount)
 
 func _process_negative_choice(_player):

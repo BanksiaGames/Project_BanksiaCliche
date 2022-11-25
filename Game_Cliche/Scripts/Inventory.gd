@@ -1,34 +1,48 @@
 extends Node
 
+class_name Inventory
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+signal OnInventoryChanged
 
 var itemList = []
 var itemConfig = GDSheets.sheet("Items")
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
 
 func AddItem(_itemId, _itemNum):
 	print("Inventory Add Item %s" % _itemId)
 	if itemList.size() < 10 :
 		itemList.append(ItemInfo.new(_itemId, _itemNum))
+		emit_signal("OnInventoryChanged")
 		return true
 	return false
 
-func RemoveItem(_itemId):
-	var removeItemIndex = GetItemIndex(_itemId)
-	if removeItemIndex != -1:
-		itemList.remove(removeItemIndex)
+func RemoveItemWithId(_itemId):
+	var itemIndex = GetItemIndex(_itemId)
+	if itemIndex != -1:
+		return RemoveItem(itemIndex)
+	return false
+	
+func RemoveItem(_itemIndex):
+	if itemList.size() > _itemIndex:
+		itemList.remove(_itemIndex)
+		emit_signal("OnInventoryChanged")
+		return true
+	return false
+
+func ReplaceItem(_itemIndex, _itemId):
+	if itemList.size() > _itemIndex:
+		itemList[_itemIndex] = ItemInfo.new(_itemId, 1)
+		emit_signal("OnInventoryChanged")
+		return true
+	return false
 
 func ResetInventory():
 	itemList.clear()
+	emit_signal("OnInventoryChanged")
 
-func PickItem(_index):
-	return itemList.pop_at(_index)
+func GetItem(_itemIndex):
+	if itemList.size() > _itemIndex:
+		return itemList[_itemIndex]
+	return ItemInfo.new("", 0)
 
 func PrintItems():
 	var itemIdString : String = ""
@@ -47,10 +61,6 @@ func GetItemCountOfType(_itemType):
 		if itemType == _itemType :
 			itemCount += 1
 	return itemCount
-
-func RandomlyPickItemOfType(_itemType):
-	var targetItemList = []
-	
 
 func GetItemIndex(_itemId):
 	var itemIndex = -1
@@ -71,10 +81,6 @@ func HasItem(_itemId):
 
 func GetItems():
 	return itemList
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 class ItemInfo:
 	var itemId

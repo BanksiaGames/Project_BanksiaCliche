@@ -21,10 +21,6 @@ var itemId = ""
 func _ready():
 	$AnimationPlayer_Content.play("ContentReset")	
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
 var bShowInteract = false
 
 func _process(delta):
@@ -34,6 +30,12 @@ func _process(delta):
 		else:
 			HideInteract()
 					
+	if itemId != "":
+		if $TextureRect/TextureRect_Icon.self_modulate.a == 0 || $TextureRect/Label_Price.modulate.a == 0:
+			$AnimationPlayer_Content.play("ContentPopup")
+	else:
+		if $TextureRect/TextureRect_Icon.self_modulate.a == 1 || $TextureRect/Label_Price.modulate.a == 1:
+			$AnimationPlayer_Content.play("ContentShrinkDown")
 
 func ShowInteract():
 	if itemId == "":
@@ -104,9 +106,10 @@ func RefreshSlot(_itemId):
 			$TextureRect/TextureRect_Icon.texture = texture
 			var itemPrice = int(itemConfig[_itemId]["Price"])
 			$TextureRect/Label_Price.text = "$%d" % itemPrice
-			$AnimationPlayer_Content.play("ContentPopup")
+			#$AnimationPlayer_Content.play("ContentPopup")
 		else:
-			$AnimationPlayer_Content.play("ContentShrinkDown")
+			pass
+			#$AnimationPlayer_Content.play("ContentShrinkDown")
 		itemId = _itemId
 	
 func SetSlotState(_slotState):
@@ -126,22 +129,21 @@ func SetSlotState(_slotState):
 			
 
 func _on_AnimationPlayer_Content_animation_started(anim_name):
-	if anim_name == "ContentPopup" :
-		$TextureRect/TextureRect_Icon.show()
-		$TextureRect/Label_Price.show()
+	pass
+#	if anim_name == "ContentPopup" :
+#		$TextureRect/TextureRect_Icon.show()
+#		$TextureRect/Label_Price.show()
 
 func _on_AnimationPlayer_Content_animation_finished(anim_name):
 	if anim_name == "ContentShrinkDown" :
-		$TextureRect/TextureRect_Icon.hide()
-		$TextureRect/Label_Price.hide()
+		#$TextureRect/TextureRect_Icon.hide()
+		#$TextureRect/Label_Price.hide()
 		bShowInteract = false
 
 func _on_SellInteractTimer_timeout():
-	$AnimationPlayer_Content.play("ContentShrinkDown")	
+	#$AnimationPlayer_Content.play("ContentShrinkDown")	
 	emit_signal("onSellClicked", slotIndex)	
 
 func _on_ThrowInteractTimer_timeout():
-	$AnimationPlayer_Content.play("ContentShrinkDown")		
+	#$AnimationPlayer_Content.play("ContentShrinkDown")		
 	emit_signal("onThrowClicked", slotIndex)	
-
-

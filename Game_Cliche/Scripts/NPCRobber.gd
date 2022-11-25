@@ -6,7 +6,10 @@ export var sfx_negative : AudioStream
 
 var triggerItemCount = 2
 var bonusDay = 3
-var probability = 100
+var probability = 30
+var itemConfig = GDSheets.sheet("Items")
+
+signal OnRobberNegativeChoice
 
 func _get_event_message():
 	return "He's gunning for a fight"
@@ -34,10 +37,22 @@ func _event_triggered(_player : Player):
 
 func _process_positive_choice(_player : Player):
 	print("Item Lost")
+	var luxuryItemList = []
+	var itemList = _player.GetInventory().GetItems()
+	for itemInfo in itemList:
+		var itemType = itemConfig[itemInfo.itemId]["Type"]
+		if itemType == "luxury":
+			luxuryItemList.append(itemInfo.itemId)
+	
+	if luxuryItemList.size() > 0:
+		# Randomly Remove 
+		luxuryItemList.shuffle()
+		_player.GetInventory().RemoveItemWithId(luxuryItemList.pop_front())
 	#PlaySound(sfx_positive)
 
 func _process_negative_choice(_player):
 	print("Day End ... ")
+	emit_signal("OnRobberNegativeChoice")
 	#PlaySound(sfx_negative)
 	
 func _reset_event():

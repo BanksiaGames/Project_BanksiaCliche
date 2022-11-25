@@ -28,6 +28,7 @@ func RefreshBubble(_itemId, _index):
 
 func _on_Timer_timeout():
 	$AnimationPlayer_Popup.play("BubblePopup")	
+	$TextureButton.disabled = false
 
 func _on_TextureButton_button_up():
 	emit_signal("onBubbleClicked", bubbleIndex)
