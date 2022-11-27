@@ -4,18 +4,27 @@ export var sfx_nothing : AudioStream
 export var sfx_returnItem : AudioStream
 export var sfx_giveChoice : AudioStream
 export var sfx_bingo : AudioStream
+export (Array, AudioStream) var sfx_gameOvers
 
 var itemConfig = GDSheets.sheet("Items")
 var currentChoiceList = []
 var giftStoryItem = []
 
-enum ChoicResult { Nothing, ReturnItem, GiveChoice, Bingo }
+enum ChoicResult { Nothing, GiveChoice, GiveOther, Bingo }
 var choiceResultDic = {
-	ChoicResult.Nothing    : 5,
-	ChoicResult.ReturnItem : 10,
-	ChoicResult.GiveChoice : 20,
-	ChoicResult.Bingo      : 20
+	ChoicResult.Nothing    : 10,
+	ChoicResult.GiveChoice : 40,
+	ChoicResult.GiveOther  : 40,
+	ChoicResult.Bingo      : 60
 }
+var hermesEmotion = 0
+var honestEmotionStep = 1
+var dishonestEmotionStep = 2
+var maxHermesEmotion = 20
+var minHermesEmotion = -20
+var defaultBingoWeight = 60
+var defaultGiveOtherWeight = 40
+var defaultNothingWeight = 10
 
 enum GamePhase { Prologue, PickItem, SelectChoice, JudgeChoice, GameOver }
 var curGamePhase = GamePhase.Prologue
@@ -27,15 +36,30 @@ var maxDayChance = 3
 var curDayChance = 3
 var curDayPass = 0
 
+enum GameEnding { Free, Work, NoItem }
+var curGameEnding = GameEnding.Free
+
 func _ready():
 	randomize()
-	$GameOver/ButtonNewGame.connect("button_up", self, "_on_button_newgame_clicked")
+	#$GameOver/ButtonNewGame.connect("button_up", self, "_on_button_newgame_clicked")
 	$Player.GetInventory().connect("OnInventoryChanged", self, "_on_player_inventory_changed")
+	#$StartGameTimer.start()
+	$SplashScreen.PlayFadeOut()
+
+func _on_StoryMenu_OnStoryEnd():
+	$MainHUD.show()
+	$StoryMenu.hide()
 	$StartGameTimer.start()
+
+func _on_StartMenu_OnGameStart():
+	$StoryMenu.show()
+	$StartMenu.hide()
+	$StoryMenu.StartPrologue()
 
 func StartNewGame():
 	SetGamePhase(GamePhase.Prologue)	
 	curDayChance = maxDayChance
+	hermesEmotion = 0
 	currentChoiceList.clear()
 	giftStoryItem.clear()
 	$Player.Reborn(maxDayLeft, maxDebtAmountLeft)
@@ -125,12 +149,33 @@ func CreateRandomChoices(_firstChoice):
 	
 	return choiceList
 
+func UpdateHermesEmotion(_honest):
+	if _honest:
+		hermesEmotion += honestEmotionStep
+	else:
+		hermesEmotion -= dishonestEmotionStep
+	hermesEmotion = clamp(hermesEmotion, minHermesEmotion, maxHermesEmotion)
+	choiceResultDic[ChoicResult.GiveOther] = defaultGiveOtherWeight - hermesEmotion
+	choiceResultDic[ChoicResult.Bingo] = defaultBingoWeight + hermesEmotion * 1.25
+	choiceResultDic[ChoicResult.Nothing] = defaultNothingWeight - hermesEmotion * 0.5
+	var printText = ""
+	for choiceResult in choiceResultDic:
+		printText += "%s : %d" % [choiceResult, choiceResultDic[choiceResult]]
+		if (choiceResult != choiceResultDic.keys().back()):
+			printText += "\n"
+	print(printText)
+	$MainHUD.SetHermesEmotion(hermesEmotion)
+
 func JudgeChoice():
 	var totalWeight : int = 0
 	for result in choiceResultDic:
 		totalWeight += choiceResultDic[result]
 	
+	print("JudgeChoice TotalWeight %d" % totalWeight)
+	
 	var randWeight = randi() % totalWeight
+	print("JudgeChoice randWeight %d" % randWeight)
+	
 	var curWeight = 0
 	var choiceResult = ""
 	for result in choiceResultDic:
@@ -160,20 +205,27 @@ func ProcessChoiceResult(choiceIndex, result):
 				var bubble : HermesBubble = $MainHUD.GetHermesBubble(i + 1)
 				bubble.SetBubbleVolume(-5)
 				bubble.PlayExplode()
-		ChoicResult.ReturnItem:
-			print("ReturnItem")
-			$Player/Inventory.AddItem(currentChoiceList[2], 1)
-			if(IsStoryItem(currentChoiceList[2])):
-				giftStoryItem.append(currentChoiceList[2])
+		ChoicResult.GiveOther:
+			print("GiveOther")
+			var choiceArray = []
+			for i in range(3):
+				if i != choiceIndex:
+					choiceArray.append(i)
+			choiceArray.shuffle()
+			var giveOtherIndex = choiceArray[0]
+			var choiceItemId = currentChoiceList[giveOtherIndex]
+			$Player/Inventory.AddItem(choiceItemId, 1)
+			if(IsStoryItem(choiceItemId)):
+				giftStoryItem.append(choiceItemId)
 			# Play Bubble 3 Move to Inventory
 			for i in range(3):
 				# Play Bubble i explode
 				var bubble : HermesBubble = $MainHUD.GetHermesBubble(i + 1)
-				if i != 2:
+				if i != giveOtherIndex:
 					bubble.SetBubbleVolume(-5)
 					bubble.PlayExplode()
 				else:
-					bubble.SetBubbleVolume(0)					
+					bubble.SetBubbleVolume(0)
 					bubble.PlayGain()
 					
 		ChoicResult.GiveChoice:
@@ -241,7 +293,7 @@ func SetGamePhase(_phase):
 func GetGamePhase():
 	return curGamePhase
 	
-func JudgeGameOver():
+func JudgeGameOver():	
 	var dayLeft = $Player.GetDayLeft()
 	var debtLeft = $Player.GetDebetAmountLeft()
 	var itemLeft = $Player/Inventory.GetItemCount()
@@ -249,13 +301,19 @@ func JudgeGameOver():
 	
 	if debtLeft <= 0 :
 		bGameOver = true
-		$GameOver/Label_GameOver.text = "You are free man now !!!"
+		curGameEnding = GameEnding.Free
+		#$MainHUD/AnimationPlayer_HUD.play_backwards("FadeIn")
+		#$GameOver/Label_GameOver.text = "You are free man now !!!"
 	elif dayLeft <= 0 :
 		bGameOver = true
-		$GameOver/Label_GameOver.text = "Time to work in underground !!!"
+		curGameEnding = GameEnding.Work
+		#$MainHUD/AnimationPlayer_HUD.play_backwards("FadeIn")		
+		#$GameOver/Label_GameOver.text = "Time to work in underground !!!"
 	elif itemLeft == 0 :
 		bGameOver = true
-		$GameOver/Label_GameOver.text = "No More Item Left !!!"
+		curGameEnding = GameEnding.NoItem
+		$MainHUD/AnimationPlayer_HUD.play_backwards("FadeIn")				
+		#$GameOver/Label_GameOver.text = "No More Item Left !!!"
 	
 	return bGameOver
 
@@ -332,6 +390,8 @@ func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 	var processPhase = SetGamePhase(GamePhase.JudgeChoice)
 	if processPhase == false :
 		return
+	
+	UpdateHermesEmotion(_bubbleIndex == 2)
 			
 	match result:
 		ChoicResult.Nothing:
@@ -340,9 +400,11 @@ func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 		ChoicResult.GiveChoice:
 			PlayJingles(sfx_giveChoice)
 			$MainHUD.PlayCharacterTalkingBubble("Anything goes")
-		ChoicResult.ReturnItem:
+		ChoicResult.GiveOther:
 			PlayJingles(sfx_returnItem)
 			$MainHUD.PlayCharacterTalkingBubble("A little bird told me")
+		ChoicResult.GiveOther:
+			pass
 		ChoicResult.Bingo:
 			PlayJingles(sfx_bingo)
 			$MainHUD.PlayCharacterTalkingBubble("Honesty is the best policy")
@@ -403,10 +465,22 @@ func _on_MainHUD_onNpcChoiceSelected(_bPositive):
 		StartNewDay()
 
 func _on_GameOverTimer_timeout():
-	$MainHUD.PlayDayEnd()
-	yield(get_tree().create_timer(1), "timeout")
+	#$MainHUD.PlayDayEnd()
+	#return
+	#yield(get_tree().create_timer(1), "timeout")
 	$MainHUD.hide()
 	$GameOver.show()
+	match curGameEnding:
+		GameEnding.Free:
+			$GameOver.ShowGameOver("You are freeman now ...")
+			$SFX_Jingles.stream = sfx_gameOvers[0]
+		GameEnding.Work:
+			$GameOver.ShowGameOver("Work Work ...")
+			$SFX_Jingles.stream = sfx_gameOvers[1]			
+		GameEnding.NoItem:
+			$GameOver.ShowGameOver("Welcome to my river, haha ...")
+			$SFX_Jingles.stream = sfx_gameOvers[2]			
+	$SFX_Jingles.play()
 
 func _on_StartGameTimer_timeout():
 	StartNewGame()
@@ -419,15 +493,12 @@ func _on_Player_OnDebtChanged():
 		return
 
 func _on_Player_OnDayLeftChanged():
-	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
+	pass
+	#$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
 
 func _on_Player_OnPlayerReborn():
-	$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
+	#$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
 	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())	
-
-func _on_button_newgame_clicked():
-	$GameOver.hide()
-	$StartGameTimer.start()
 
 func _on_player_inventory_changed():
 	yield(get_tree().create_timer(1), "timeout")	
@@ -436,3 +507,15 @@ func _on_player_inventory_changed():
 func _on_Robber_OnRobberNegativeChoice():
 	curDayChance = 0
 	$Player.BackToPast(-3)
+
+func _on_GameOver_OnGameOverEnd():
+	$GameOver.hide()
+	$StartMenu.show()
+	$StartMenu.ShowMenu(true)
+
+
+func _on_SplashScreen_OnSplashShow():
+	$StartMenu.show()
+
+func _on_SplashScreen_OnSplashHide():
+	$StartMenu.ShowMenu(false)

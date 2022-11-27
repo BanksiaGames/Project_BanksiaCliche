@@ -1,16 +1,11 @@
 extends CanvasLayer
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+signal OnGameOverEnd
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
+func ShowGameOver(_endingMessage : String):
+	$Label_GameOver.StartTyping(_endingMessage, 0.1)
+	$AnimationPlayer_Typing.play("PlayTypingSFX")
+	$Timer.start(_endingMessage.length() * 0.1 + 5)
+	
+func _on_Timer_timeout():
+	emit_signal("OnGameOverEnd")

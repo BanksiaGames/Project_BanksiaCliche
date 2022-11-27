@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/male_positive.mp3-a8b6553745703f7f01011814200bb138.mp3str"
+
+[deps]
+
+source_file="res://SFX/male_positive.mp3"
+dest_files=[ "res://.import/male_positive.mp3-a8b6553745703f7f01011814200bb138.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

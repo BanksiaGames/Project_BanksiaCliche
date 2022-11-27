@@ -47,6 +47,7 @@ func SellAllItem():
 	
 func RepayDebt(_amount):
 	debtInfo.amountLeft -= _amount
+	debtInfo.amountLeft = max(debtInfo.amountLeft, 0)
 	$SFX_PayDebt.play()
 	emit_signal("OnDebtChanged")
 

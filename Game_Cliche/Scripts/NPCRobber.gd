@@ -48,18 +48,18 @@ func _process_positive_choice(_player : Player):
 		# Randomly Remove 
 		luxuryItemList.shuffle()
 		_player.GetInventory().RemoveItemWithId(luxuryItemList.pop_front())
-	#PlaySound(sfx_positive)
+	PlaySound(sfx_positive)
 
 func _process_negative_choice(_player):
 	print("Day End ... ")
 	emit_signal("OnRobberNegativeChoice")
-	#PlaySound(sfx_negative)
+	PlaySound(sfx_negative)
 	
 func _reset_event():
 	pass
 
 func _npc_show():
-	#PlaySound(sfx_show)
+	PlaySound(sfx_show)
 	pass
 	
 func PlaySound(_audioStream):

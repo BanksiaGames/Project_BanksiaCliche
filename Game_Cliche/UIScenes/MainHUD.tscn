@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://Scripts/MainHUD.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Scenes/MainScene.jpg" type="Texture" id=2]
@@ -7,7 +7,7 @@
 [ext_resource path="res://Scripts/SettingButton.gd" type="Script" id=5]
 [ext_resource path="res://Textures/UI/Frame_Debt.png" type="Texture" id=6]
 [ext_resource path="res://Textures/UI/ProgressBar_Time2.png" type="Texture" id=7]
-[ext_resource path="res://Textures/UI/ProgressBar_Time1.png" type="Texture" id=8]
+[ext_resource path="res://Textures/UI/Emoji3.png" type="Texture" id=8]
 [ext_resource path="res://UIScenes/InventorySlot.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Textures/UI/Frame_Rope.png" type="Texture" id=10]
 [ext_resource path="res://Textures/Characters/Hermes.png" type="Texture" id=11]
@@ -19,7 +19,13 @@
 [ext_resource path="res://Textures/Icons/Item1.png" type="Texture" id=17]
 [ext_resource path="res://Scripts/TypewriterLabel.gd" type="Script" id=18]
 [ext_resource path="res://SFX/水面に石投げ2.mp3" type="AudioStream" id=19]
+[ext_resource path="res://Textures/UI/ProgressBar_Handle.png" type="Texture" id=20]
+[ext_resource path="res://Scripts/HermesEmotion.gd" type="Script" id=21]
+[ext_resource path="res://Textures/UI/Emoji4.png" type="Texture" id=22]
 [ext_resource path="res://SFX/キーボードの早打ち1.mp3" type="AudioStream" id=23]
+[ext_resource path="res://Textures/UI/Emoji2.png" type="Texture" id=24]
+[ext_resource path="res://Textures/UI/Emoji1.png" type="Texture" id=25]
+[ext_resource path="res://Textures/UI/Emoji5.png" type="Texture" id=26]
 
 [sub_resource type="DynamicFontData" id=6]
 font_path = "res://Fonts/tahoma.ttf"
@@ -123,19 +129,19 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ) ]
 }
 
-[sub_resource type="DynamicFontData" id=12]
+[sub_resource type="DynamicFontData" id=27]
 font_path = "res://Fonts/tahomabd.ttf"
 
 [sub_resource type="DynamicFont" id=13]
 size = 40
-font_data = SubResource( 12 )
+font_data = SubResource( 27 )
 
-[sub_resource type="DynamicFontData" id=14]
+[sub_resource type="DynamicFontData" id=26]
 font_path = "res://Fonts/tahoma.ttf"
 
 [sub_resource type="DynamicFont" id=15]
 size = 21
-font_data = SubResource( 14 )
+font_data = SubResource( 26 )
 
 [sub_resource type="Animation" id=24]
 resource_name = "PlayTypingSFX"
@@ -445,7 +451,7 @@ tracks/1/keys = {
 "values": [ Vector2( 120, -99 ), Vector2( 120, 28 ), Vector2( 120, 4 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("DayLeft:rect_position")
+tracks/2/path = NodePath("HermesEmotion:rect_position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -509,7 +515,7 @@ tracks/2/keys = {
 "values": [ Vector2( 120, -99 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("DayLeft:rect_position")
+tracks/3/path = NodePath("HermesEmotion:rect_position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -660,29 +666,36 @@ valign = 1
 [node name="AnimationPlayer" type="AnimationPlayer" parent="DebtAmount"]
 anims/AmountChange = SubResource( 23 )
 
-[node name="DayLeft" type="Control" parent="."]
+[node name="HermesEmotion" type="Control" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -207.0
 margin_top = -93.0
 margin_right = -49.0
 margin_bottom = -11.0
-__meta__ = {
-"_edit_group_": true
-}
+script = ExtResource( 21 )
+emojiTextures = [ ExtResource( 26 ), ExtResource( 22 ), ExtResource( 8 ), ExtResource( 24 ), ExtResource( 25 ) ]
+emotionMax = 20.0
+emotionMin = -20.0
 
-[node name="TextureProgress" type="TextureProgress" parent="DayLeft"]
-rect_scale = Vector2( -1, 1 )
+[node name="TextureRectBG" type="TextureRect" parent="HermesEmotion"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 7 )
+
+[node name="TextureProgress" type="TextureProgress" parent="HermesEmotion"]
+visible = false
 rect_pivot_offset = Vector2( 79, 0 )
-value = 60.0
-texture_under = ExtResource( 8 )
+value = 2.0
+texture_over = ExtResource( 7 )
 texture_progress = ExtResource( 7 )
 fill_mode = 4
 radial_initial_angle = 90.0
 radial_fill_degrees = 180.0
 radial_center_offset = Vector2( 0, -40 )
 
-[node name="Label" type="Label" parent="DayLeft"]
+[node name="Label" type="Label" parent="HermesEmotion"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -700,8 +713,32 @@ text = "99"
 align = 1
 valign = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="DayLeft"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HermesEmotion"]
 anims/DayChange = SubResource( 25 )
+
+[node name="TextureRect_Emoji" type="TextureRect" parent="HermesEmotion"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = -55.0
+margin_right = 30.0
+margin_bottom = 5.0
+texture = ExtResource( 8 )
+
+[node name="TextureRect_Handle" type="TextureRect" parent="HermesEmotion"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -9.0
+margin_top = -23.0
+margin_right = 9.0
+rect_pivot_offset = Vector2( 9, -55 )
+texture = ExtResource( 20 )
+
+[node name="Tween" type="Tween" parent="HermesEmotion"]
 
 [node name="HermesChoice" type="Control" parent="."]
 anchor_left = 0.5
@@ -927,6 +964,7 @@ anims/Reset = SubResource( 18 )
 [connection signal="hide" from="MainCharacter" to="." method="_on_MainCharacter_hide"]
 [connection signal="button_down" from="SettingButton" to="SettingButton" method="_on_TextureButton_button_down"]
 [connection signal="button_up" from="SettingButton" to="SettingButton" method="_on_TextureButton_button_up"]
+[connection signal="tween_completed" from="HermesEmotion/Tween" to="HermesEmotion" method="_on_Tween_tween_completed"]
 [connection signal="hide" from="HermesChoice" to="." method="_on_HermesChoice_hide"]
 
 [editable path="NPCChoice/Button_Positive"]

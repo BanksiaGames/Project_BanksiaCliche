@@ -34,19 +34,19 @@ func _event_triggered(_player):
 
 func _process_positive_choice(_player : Player):
 	print("Time Return")
-	#PlaySound(sfx_positive)
+	PlaySound(sfx_positive)
 	if _player.GetInventory().RemoveItemWithId(targetItemId):
 		_player.BackToPast(bonusDay)
 
 func _process_negative_choice(_player):
 	print("Elf Disappar ... ")
-	#PlaySound(sfx_negative)
+	PlaySound(sfx_negative)
 	
 func _reset_event():
 	pass
 
 func _npc_show():
-	#PlaySound(sfx_show)
+	PlaySound(sfx_show)
 	pass
 	
 func PlaySound(_audioStream):

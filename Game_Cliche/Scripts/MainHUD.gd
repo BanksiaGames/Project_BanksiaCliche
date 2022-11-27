@@ -78,12 +78,17 @@ func HideAllCharacterAndChoices():
 	
 func UpdateDebtAmount(_amount):
 	$DebtAmount/Label.text = "-$%d" % _amount
+	if _amount == 0:
+		$DebtAmount/Label.text = "$0"
 	$DebtAmount/AnimationPlayer.play("AmountChange")
 	
-func UpdateDayLeft(_dayLeft, _maxDay):
-	$DayLeft/Label.text = str(_dayLeft)
-	$DayLeft/TextureProgress.value = float(_dayLeft) / float(_maxDay) * 100
-	$DayLeft/AnimationPlayer.play("DayChange")
+#func UpdateDayLeft(_dayLeft, _maxDay):
+#	$DayLeft/Label.text = str(_dayLeft)
+#	$DayLeft/TextureProgress.value = float(_dayLeft) / float(_maxDay) * 100
+#	$DayLeft/AnimationPlayer.play("DayChange")
+
+func SetHermesEmotion(_emotion):
+	$HermesEmotion.SetEmotionValue(_emotion)
 	
 func ShowHermesEvent(_choiceItemList):
 	yield(get_tree().create_timer(1.25), "timeout")
@@ -92,7 +97,7 @@ func ShowHermesEvent(_choiceItemList):
 	$HermesChoice.show()
 	$MainCharacter/NinePatchRect.rect_scale = Vector2.ZERO
 	$AnimationPlayer_MainCharacter.play("CharacterPopup")
-	PlayCharacterTalkingBubble("What did you fall into the lake ?")
+	PlayCharacterTalkingBubble("Was this what you had lost ?")
 	for i in range(3):
 		var choiceName = "HermesChoice/HermesBubble%d" % (i + 1)
 		var choiceBubble : HermesBubble = .get_node(choiceName)
@@ -146,6 +151,7 @@ func ResetHUD():
 	$Panel_Day/Label_Day.text = ""
 	$Panel_Day/Label_Event.text = ""
 	$AnimationPlayer_HUD.play("Reset")
+	$HermesEmotion.ResetEmotion()
 
 func PlayFadeIn():
 	$AnimationPlayer_HUD.play("FadeIn")

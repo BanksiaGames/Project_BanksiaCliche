@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/可愛いジャンプ.mp3-28e3d29d6f11816348141c5161dceb0e.mp3str"
+
+[deps]
+
+source_file="res://SFX/可愛いジャンプ.mp3"
+dest_files=[ "res://.import/可愛いジャンプ.mp3-28e3d29d6f11816348141c5161dceb0e.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

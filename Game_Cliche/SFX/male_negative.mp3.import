@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/male_negative.mp3-bc15c84e5cc5c50d62268eff9b76b95e.mp3str"
+
+[deps]
+
+source_file="res://SFX/male_negative.mp3"
+dest_files=[ "res://.import/male_negative.mp3-bc15c84e5cc5c50d62268eff9b76b95e.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

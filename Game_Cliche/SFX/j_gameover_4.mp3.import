@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/j_gameover_4.mp3-12ac20d6862f431786390d93b28d2c59.mp3str"
+
+[deps]
+
+source_file="res://SFX/j_gameover_4.mp3"
+dest_files=[ "res://.import/j_gameover_4.mp3-12ac20d6862f431786390d93b28d2c59.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
