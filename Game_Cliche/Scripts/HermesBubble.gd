@@ -2,19 +2,15 @@ extends Control
 
 class_name HermesBubble
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 signal onBubbleClicked(_bubbleIndex)
 
 var itemConfig = GDSheets.sheet("Items")
 var bubbleIndex : int = 0
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$AnimationPlayer.play("BubbleFloat")
+	$TextureButton.disabled = false	
 	
 func RefreshBubble(_itemId, _index):
 	var itemImagePath = itemConfig[_itemId]["Image"]

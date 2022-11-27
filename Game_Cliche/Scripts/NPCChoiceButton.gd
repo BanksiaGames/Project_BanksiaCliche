@@ -8,12 +8,12 @@ func _on_Button_Positive_button_up():
 	$SFX_Clicked.play()
 
 func _on_Button_Positive_mouse_entered():
-	$Label.rect_position = Vector2(0, 10)
+	$Label.rect_position = Vector2(15, 10)
 	$SFX_Hover.play()
 
 func _on_Button_Positive_mouse_exited():
-	$Label.rect_position = Vector2(0, 16.5)
+	$Label.rect_position = Vector2(15, 16.5)
 
 func SetText(_text):
 	$Label.text = _text
-	$Label.rect_position = Vector2(0, 16.5)	
+	$Label.rect_position = Vector2(15, 16.5)	
