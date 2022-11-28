@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://Scripts/MainHUD.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Scenes/MainScene.jpg" type="Texture" id=2]
@@ -111,6 +111,63 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 2, 2 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=28]
+resource_name = "GainEmotion"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("TextureRect_EmojiGain:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.3, 0.7, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -335, 50 ), Vector2( -335, 50 ), Vector2( 49, -14 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TextureRect_EmojiGain:rect_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.3, 0.4, 0.5, 0.7, 1.2, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 1.1, 1.1 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 2, 2 ), Vector2( 0.5, 0.5 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("TextureRect_EmojiGain:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.3, 0.5, 0.8, 1.2, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("TextureRect_EmojiGain")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.3, 1.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "show"
+}, {
+"args": [  ],
+"method": "hide"
+} ]
 }
 
 [sub_resource type="Animation" id=8]
@@ -266,20 +323,6 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
-tracks/3/type = "method"
-tracks/3/path = NodePath("MainCharacter")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0.2 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "hide"
-} ]
-}
 
 [sub_resource type="Animation" id=10]
 resource_name = "CharacterPopup"
@@ -331,20 +374,6 @@ tracks/3/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.74902 ), Color( 1, 1, 1, 1 ) ]
-}
-tracks/4/type = "method"
-tracks/4/path = NodePath("MainCharacter")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "show"
-} ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -744,6 +773,7 @@ valign = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HermesEmotion"]
 anims/DayChange = SubResource( 25 )
+anims/GainEmotion = SubResource( 28 )
 
 [node name="TextureRect_Emoji" type="TextureRect" parent="HermesEmotion"]
 anchor_left = 0.5
@@ -768,20 +798,23 @@ rect_pivot_offset = Vector2( 9, -55 )
 texture = ExtResource( 20 )
 
 [node name="TextureRect_EmojiGain" type="TextureRect" parent="HermesEmotion"]
-visible = false
+self_modulate = Color( 1, 1, 1, 0 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -30.0
-margin_top = -30.0
-margin_right = 30.0
-margin_bottom = 30.0
+margin_left = -379.0
+margin_top = 59.0
+margin_right = -319.0
+margin_bottom = 119.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 30, 30 )
 texture = ExtResource( 25 )
 
 [node name="Tween" type="Tween" parent="HermesEmotion"]
 
 [node name="HermesChoice" type="Control" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1005,6 +1038,7 @@ anims/Reset = SubResource( 18 )
 [connection signal="hide" from="MainCharacter" to="." method="_on_MainCharacter_hide"]
 [connection signal="button_down" from="SettingButton" to="SettingButton" method="_on_TextureButton_button_down"]
 [connection signal="button_up" from="SettingButton" to="SettingButton" method="_on_TextureButton_button_up"]
+[connection signal="animation_finished" from="HermesEmotion/AnimationPlayer" to="HermesEmotion" method="_on_AnimationPlayer_animation_finished"]
 [connection signal="tween_completed" from="HermesEmotion/Tween" to="HermesEmotion" method="_on_Tween_tween_completed"]
 [connection signal="hide" from="HermesChoice" to="." method="_on_HermesChoice_hide"]
 

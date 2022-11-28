@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/GameplayMain.gd" type="Script" id=2]
@@ -39,6 +39,8 @@
 [ext_resource path="res://SFX/j_gameover_5.mp3" type="AudioStream" id=37]
 [ext_resource path="res://SFX/j_gameover_4.mp3" type="AudioStream" id=38]
 [ext_resource path="res://UIScenes/SplashScreen.tscn" type="PackedScene" id=39]
+[ext_resource path="res://SFX/魔王魂  ヒーリング01.mp3" type="AudioStream" id=40]
+[ext_resource path="res://SFX/魔王魂  ヒーリング05.mp3" type="AudioStream" id=41]
 
 [node name="GameplayMain" type="Node"]
 script = ExtResource( 2 )
@@ -47,6 +49,7 @@ sfx_returnItem = ExtResource( 12 )
 sfx_giveChoice = ExtResource( 10 )
 sfx_bingo = ExtResource( 9 )
 sfx_gameOvers = [ ExtResource( 37 ), ExtResource( 36 ), ExtResource( 38 ) ]
+bgms = [ ExtResource( 40 ), ExtResource( 8 ), ExtResource( 41 ) ]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 
@@ -103,6 +106,8 @@ stream = ExtResource( 8 )
 volume_db = -10.0
 
 [node name="SFX_Jingles" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Tween" type="Tween" parent="."]
 
 [connection signal="OnDayLeftChanged" from="Player" to="." method="_on_Player_OnDayLeftChanged"]
 [connection signal="OnDebtChanged" from="Player" to="." method="_on_Player_OnDebtChanged"]

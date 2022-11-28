@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/魔王魂  ヒーリング01.mp3-c87e11a95276c8e118b7f1d589c3ad63.mp3str"
+
+[deps]
+
+source_file="res://SFX/魔王魂  ヒーリング01.mp3"
+dest_files=[ "res://.import/魔王魂  ヒーリング01.mp3-c87e11a95276c8e118b7f1d589c3ad63.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

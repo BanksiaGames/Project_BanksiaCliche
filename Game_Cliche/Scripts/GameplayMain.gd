@@ -5,6 +5,7 @@ export var sfx_returnItem : AudioStream
 export var sfx_giveChoice : AudioStream
 export var sfx_bingo : AudioStream
 export (Array, AudioStream) var sfx_gameOvers
+export (Array, AudioStream) var bgms
 
 var itemConfig = GDSheets.sheet("Items")
 var currentChoiceList = []
@@ -55,6 +56,11 @@ func _on_StartMenu_OnGameStart():
 	$StoryMenu.show()
 	$StartMenu.hide()
 	$StoryMenu.StartPrologue()
+	$Tween.interpolate_property(
+		$Music, "volume_db", 
+		-10, -50, 1, 
+		Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+	$Tween.start()
 
 func StartNewGame():
 	SetGamePhase(GamePhase.Prologue)	
@@ -69,7 +75,13 @@ func StartNewGame():
 	$MainHUD.MoveNewDay(maxDayLeft, "My Last Month .....")
 	currentChoiceList = ["1026", "1025", "1024"]
 	yield(get_tree().create_timer(4), "timeout")
-	$Music.play()	
+	$Music.stream = bgms[1]
+	$Music.play()
+	$Tween.interpolate_property(
+		$Music, "volume_db", 
+		-50, -10, 1, 
+		Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+	$Tween.start()
 	$MainHUD.PlayDropItem("1024")
 	$MainHUD.ShowHermesEvent(currentChoiceList)	
 
@@ -124,6 +136,9 @@ func CreateRandomChoices(_firstChoice):
 			
 		if itemType == "unique" && $Player/Inventory.HasItem(itemId) :
 			itemWeight = 0
+		
+		if itemType == "luxury" && firstChoiceType == "trash":
+			itemWeight = itemWeight + itemWeightModifier
 		
 		if itemId != _firstChoice and !giftStoryItem.has(itemId):
 			itemPool.append({id = itemId, weight = itemWeight})
@@ -282,6 +297,8 @@ func SetGamePhase(_phase):
 			$Music.stop()
 			$GameOverTimer.start()
 		GamePhase.PickItem:
+			curNPC = null
+			currentChoiceList.empty()
 			if $Player/Inventory.GetItemCount() == 1:
 				$MainHUD.RefreshInventorySlotsState(InventorySlot.SlotState.ThrowOnly)
 			else:
@@ -380,6 +397,9 @@ func _on_MainHUD_onInventorySlotThrowClicked(_itemIndex):
 	$MainHUD.ShowHermesEvent(currentChoiceList)
 
 func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
+	if currentChoiceList.size() == 0:
+		return
+		
 	var result = JudgeChoice()
 	
 	var bProcessPrologue = GetGamePhase() == GamePhase.Prologue
@@ -493,7 +513,20 @@ func _on_Player_OnDebtChanged():
 		return
 
 func _on_Player_OnDayLeftChanged():
-	pass
+	if $Player.GetDayLeft() <= 10 and $Music.stream != bgms[2]:
+		$Tween.interpolate_property(
+		$Music, "volume_db", 
+		-10, -50, 2, 
+		Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+		$Tween.start()
+		yield(get_tree().create_timer(2.5), "timeout")
+		$Music.stream = bgms[2]
+		$Music.play()
+		$Tween.interpolate_property(
+		$Music, "volume_db", 
+		-50, -10, 1, 
+		Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+		$Tween.start()
 	#$MainHUD.UpdateDayLeft($Player.GetDayLeft(), maxDayLeft)
 
 func _on_Player_OnPlayerReborn():
@@ -517,9 +550,13 @@ func _on_GameOver_OnGameOverEnd():
 	$GameOver.hide()
 	$StartMenu.show()
 	$StartMenu.ShowMenu(true)
+	$Music.stream = bgms[0]
+	$Music.play()
 
 func _on_SplashScreen_OnSplashShow():
 	$StartMenu.show()
 
 func _on_SplashScreen_OnSplashHide():
 	$StartMenu.ShowMenu(false)
+	$Music.stream = bgms[0]
+	$Music.play()

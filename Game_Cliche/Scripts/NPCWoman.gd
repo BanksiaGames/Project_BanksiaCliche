@@ -25,7 +25,6 @@ func _get_negative_message():
 	return "Hmmmm, please tell me if your found that"
 
 func _event_triggered(_player):
-	return true
 	var bTriggered = false
 	var bHasTargetItem = _player.get_node("Inventory").HasItem(targetItemId)
 	if bHasTargetItem:
