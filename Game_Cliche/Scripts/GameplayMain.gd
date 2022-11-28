@@ -451,7 +451,7 @@ func _on_MainHUD_onNpcChoiceSelected(_bPositive):
 	
 	$MainHUD/NPCChoice.hide()
 	
-	yield(get_tree().create_timer(1), "timeout")		
+	yield(get_tree().create_timer(2), "timeout")		
 	
 	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())	
 	$MainHUD/AnimationPlayer_MainCharacter.play("CharacterHide")
@@ -501,7 +501,12 @@ func _on_Player_OnPlayerReborn():
 	$MainHUD.UpdateDebtAmount($Player.GetDebetAmountLeft())	
 
 func _on_player_inventory_changed():
+	if GetGamePhase() == GamePhase.SelectChoice and curNPC != null :
+		if curNPC._keep_event($Player) == false:
+			_on_MainHUD_onNpcChoiceSelected(false)
+	
 	yield(get_tree().create_timer(1), "timeout")	
+	
 	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())
 	
 func _on_Robber_OnRobberNegativeChoice():
@@ -512,7 +517,6 @@ func _on_GameOver_OnGameOverEnd():
 	$GameOver.hide()
 	$StartMenu.show()
 	$StartMenu.ShowMenu(true)
-
 
 func _on_SplashScreen_OnSplashShow():
 	$StartMenu.show()

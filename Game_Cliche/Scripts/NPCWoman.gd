@@ -25,6 +25,7 @@ func _get_negative_message():
 	return "Hmmmm, please tell me if your found that"
 
 func _event_triggered(_player):
+	return true
 	var bTriggered = false
 	var bHasTargetItem = _player.get_node("Inventory").HasItem(targetItemId)
 	if bHasTargetItem:
@@ -55,3 +56,7 @@ func _npc_show():
 func PlaySound(_audioStream):
 	$SFX.stream = _audioStream
 	$SFX.play()
+
+func _keep_event(_player : Player) -> bool:
+	var bHasTargetItem = _player.get_node("Inventory").HasItem(targetItemId)	
+	return bHasTargetItem

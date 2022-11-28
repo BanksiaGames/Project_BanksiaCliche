@@ -44,3 +44,6 @@ func _reset_event():
 
 func _npc_show():
 	pass
+
+func _keep_event(_player : Player) -> bool:
+	return true

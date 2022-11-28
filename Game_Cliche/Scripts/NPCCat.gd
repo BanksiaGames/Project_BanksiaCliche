@@ -59,3 +59,7 @@ func _npc_show():
 func PlaySound(_audioStream):
 	$SFX.stream = _audioStream
 	$SFX.play()
+
+func _keep_event(_player : Player) -> bool:
+	var bHasTargetItem = _player.get_node("Inventory").HasItem(targetItemId)	
+	return bHasTargetItem

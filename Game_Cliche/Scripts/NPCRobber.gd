@@ -65,3 +65,7 @@ func _npc_show():
 func PlaySound(_audioStream):
 	$SFX.stream = _audioStream
 	$SFX.play()
+
+func _keep_event(_player : Player) -> bool:
+	var luxuryItemCount = _player.get_node("Inventory").GetItemCountOfType("luxury")
+	return luxuryItemCount >= triggerItemCount
