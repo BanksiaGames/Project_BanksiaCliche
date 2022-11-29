@@ -1,9 +1,6 @@
 extends Node
 
-export var sfx_nothing : AudioStream
-export var sfx_returnItem : AudioStream
-export var sfx_giveChoice : AudioStream
-export var sfx_bingo : AudioStream
+export (Array, AudioStream) var sfx_choiceResults;
 export (Array, AudioStream) var sfx_gameOvers
 export (Array, AudioStream) var bgms
 
@@ -415,19 +412,21 @@ func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 			
 	match result:
 		ChoicResult.Nothing:
-			PlayJingles(sfx_nothing)
+			PlayJingles(sfx_choiceResults[0])
 			$MainHUD.PlayCharacterTalkingBubble("Barefaced liar!!")
 		ChoicResult.GiveChoice:
-			PlayJingles(sfx_giveChoice)
+			PlayJingles(sfx_choiceResults[1])
 			$MainHUD.PlayCharacterTalkingBubble("Anything goes")
 		ChoicResult.GiveOther:
-			PlayJingles(sfx_returnItem)
+			PlayJingles(sfx_choiceResults[2])
 			$MainHUD.PlayCharacterTalkingBubble("A little bird told me")
-		ChoicResult.GiveOther:
-			pass
 		ChoicResult.Bingo:
-			PlayJingles(sfx_bingo)
-			$MainHUD.PlayCharacterTalkingBubble("Honesty is the best policy")
+			if _bubbleIndex == 2:			
+				PlayJingles(sfx_choiceResults[3])
+				$MainHUD.PlayCharacterTalkingBubble("Honesty is the best policy")
+			else:
+				PlayJingles(sfx_choiceResults[4])
+				$MainHUD.PlayCharacterTalkingBubble("Even if it is not true, ... ...")
 	
 	yield(get_tree().create_timer(0.75), "timeout")	
 	
