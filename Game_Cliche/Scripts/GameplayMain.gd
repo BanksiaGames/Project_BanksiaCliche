@@ -412,8 +412,12 @@ func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 			
 	match result:
 		ChoicResult.Nothing:
-			PlayJingles(sfx_choiceResults[0])
-			$MainHUD.PlayCharacterTalkingBubble("Barefaced liar!!")
+			if _bubbleIndex == 2:
+				PlayJingles(sfx_choiceResults[4])
+				$MainHUD.PlayCharacterTalkingBubble("No legacy is so rich as honesty")
+			else:
+				PlayJingles(sfx_choiceResults[0])
+				$MainHUD.PlayCharacterTalkingBubble("Barefaced liar!!")
 		ChoicResult.GiveChoice:
 			PlayJingles(sfx_choiceResults[1])
 			$MainHUD.PlayCharacterTalkingBubble("Anything goes")
@@ -428,7 +432,7 @@ func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 				PlayJingles(sfx_choiceResults[4])
 				$MainHUD.PlayCharacterTalkingBubble("Even if it is not true, ... ...")
 	
-	yield(get_tree().create_timer(0.75), "timeout")	
+	yield(get_tree().create_timer(1.25), "timeout")	
 	
 	ProcessChoiceResult(_bubbleIndex, result)
 	

@@ -11,5 +11,5 @@ dest_files=[ "res://.import/jingles_PIZZI13.ogg-8c8ea304a2ab675a6a1b295ccfe62b21
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
