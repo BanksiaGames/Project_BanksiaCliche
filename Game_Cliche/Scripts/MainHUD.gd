@@ -90,14 +90,14 @@ func UpdateDebtAmount(_amount):
 func SetHermesEmotion(_emotion):
 	$HermesEmotion.SetEmotionValue(_emotion)
 	
-func ShowHermesEvent(_choiceItemList):
+func ShowHermesEvent(_choiceItemList, _talking):
 	yield(get_tree().create_timer(1.25), "timeout")
 	$MainCharacter.texture = hermesBodyTexture	
 	$MainCharacter.show()
 	$HermesChoice.show()
 	$MainCharacter/NinePatchRect.rect_scale = Vector2.ZERO
 	$AnimationPlayer_MainCharacter.play("CharacterPopup")
-	PlayCharacterTalkingBubble("Was this what you had lost ?")
+	PlayCharacterTalkingBubble(_talking)
 	for i in range(3):
 		var choiceName = "HermesChoice/HermesBubble%d" % (i + 1)
 		var choiceBubble : HermesBubble = .get_node(choiceName)

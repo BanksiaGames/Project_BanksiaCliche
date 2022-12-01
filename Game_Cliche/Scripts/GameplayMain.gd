@@ -15,6 +15,7 @@ var choiceResultDic = {
 	ChoicResult.GiveOther  : 40,
 	ChoicResult.Bingo      : 60
 }
+
 var hermesEmotion = 0
 var honestEmotionStep = 1
 var dishonestEmotionStep = 2
@@ -23,6 +24,7 @@ var minHermesEmotion = -20
 var defaultBingoWeight = 60
 var defaultGiveOtherWeight = 40
 var defaultNothingWeight = 10
+var luxuryChoiceProbability = 3
 
 enum GamePhase { Prologue, PickItem, SelectChoice, JudgeChoice, GameOver }
 var curGamePhase = GamePhase.Prologue
@@ -33,6 +35,8 @@ var maxDebtAmountLeft = 1000000
 var maxDayChance = 3
 var curDayChance = 3
 var curDayPass = 0
+var thrownItemId = ""
+var bInLuxuryChoice = false
 
 enum GameEnding { Free, Work, NoItem }
 var curGameEnding = GameEnding.Free
@@ -71,6 +75,7 @@ func StartNewGame():
 	$MainHUD.ResetHUD()
 	$MainHUD.MoveNewDay(maxDayLeft, "My Last Month .....")
 	currentChoiceList = ["1026", "1025", "1024"]
+	thrownItemId = "1024"
 	yield(get_tree().create_timer(4), "timeout")
 	$Music.stream = bgms[1]
 	$Music.play()
@@ -80,7 +85,7 @@ func StartNewGame():
 		Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	$Tween.start()
 	$MainHUD.PlayDropItem("1024")
-	$MainHUD.ShowHermesEvent(currentChoiceList)	
+	$MainHUD.ShowHermesEvent(currentChoiceList, "Was this what you had lost ?")	
 
 func ResetNPCEvent():
 	$Cat._reset_event()
@@ -113,6 +118,51 @@ func StartNewDay():
 	yield(get_tree().create_timer(2.75), "timeout")
 	if curNPC != null:
 		ProcessNPCEvent(curNPC)
+
+func CreateLuxuryChoices():
+	if thrownItemId == "":
+		return false
+	
+	var thrownItemType = itemConfig[thrownItemId]["Type"]
+	
+	if thrownItemType == "luxury":
+		return false
+	
+	var randLuxWeight = randi() % 100
+	if randLuxWeight > luxuryChoiceProbability:
+		return false
+	
+	# Create Random Pool
+	var itemPool = []
+	var itemTotalWeight : int = 0
+	
+	for itemId in itemConfig.keys():
+		var itemType = itemConfig[itemId]["Type"]
+		if itemType == "luxury":
+			var itemWeight = int(itemConfig[itemId]["Weight"])
+			itemPool.append({id = itemId, weight = itemWeight})
+			itemTotalWeight += itemWeight
+	
+	# Pick Three Items in Pool
+	var choiceList = []
+	for i in range(3):
+		var randWeight = randi() % itemTotalWeight
+		var pickIndex = 0
+		var curWeight = 0
+		var curIndex = 0
+		for item in itemPool:
+			curWeight += item.weight
+			if curWeight >= randWeight :
+				choiceList.append(item.id)
+				pickIndex = curIndex
+				itemTotalWeight -= item.weight
+				break
+			curIndex += 1
+		itemPool.remove(pickIndex)
+		
+	choiceList.shuffle()	
+	currentChoiceList = choiceList
+	return true
 
 func CreateRandomChoices(_firstChoice):
 	var choiceList = []
@@ -158,6 +208,9 @@ func CreateRandomChoices(_firstChoice):
 		itemPool.remove(pickIndex)
 	
 	choiceList.append(_firstChoice)
+	choiceList.shuffle()
+	
+	thrownItemId = _firstChoice
 	
 	return choiceList
 
@@ -169,7 +222,11 @@ func UpdateHermesEmotion(_honest):
 	hermesEmotion = clamp(hermesEmotion, minHermesEmotion, maxHermesEmotion)
 	choiceResultDic[ChoicResult.GiveOther] = defaultGiveOtherWeight - hermesEmotion
 	choiceResultDic[ChoicResult.Bingo] = defaultBingoWeight + hermesEmotion * 1.25
-	choiceResultDic[ChoicResult.Nothing] = defaultNothingWeight - hermesEmotion * 0.5
+	if $Player.GetDayLeft() >= 25:
+		choiceResultDic[ChoicResult.Nothing] = 1
+	else:
+		choiceResultDic[ChoicResult.Nothing] = defaultNothingWeight - hermesEmotion * 0.5
+	
 	var printText = ""
 	for choiceResult in choiceResultDic:
 		printText += "%s : %d" % [choiceResult, choiceResultDic[choiceResult]]
@@ -198,9 +255,9 @@ func JudgeChoice():
 	
 	return choiceResult
 
-func JudgePrologueChoice(_index):
+func JudgePrologueChoice(_bHonest):
 	var choiceResult = ChoicResult.GiveChoice
-	if _index == 2 :
+	if _bHonest :
 		choiceResult = ChoicResult.Bingo
 	return choiceResult
 
@@ -385,52 +442,82 @@ func _on_MainHUD_onInventorySlotThrowClicked(_itemIndex):
 	var itemInfo = $Player/Inventory.GetItem(_itemIndex)
 	if itemInfo.itemId != "":
 		currentChoiceList = CreateRandomChoices(itemInfo.itemId)
+		bInLuxuryChoice = CreateLuxuryChoices()
 		$Player.GetInventory().RemoveItem(_itemIndex)
 	
 	yield(get_tree().create_timer(0.2), "timeout")
 	
 	$MainHUD.RefreshInventorySlots($Player/Inventory.GetItems())
 	$MainHUD.PlayDropItem(itemInfo.itemId)
-	$MainHUD.ShowHermesEvent(currentChoiceList)
+	var hermesTalking = "Was this what you had lost ?"
+	if bInLuxuryChoice :
+		hermesTalking = "A river does not always bring axes"
+	$MainHUD.ShowHermesEvent(currentChoiceList, hermesTalking)
 
 func _on_MainHUD_onHermesBubbleClicked(_bubbleIndex):
 	if currentChoiceList.size() == 0:
 		return
+		
+	var curChoice = currentChoiceList[_bubbleIndex]
+	var bHonestChoice = curChoice == thrownItemId
 		
 	var result = JudgeChoice()
 	
 	var bProcessPrologue = GetGamePhase() == GamePhase.Prologue
 	
 	if bProcessPrologue:
-		result = JudgePrologueChoice(_bubbleIndex)
+		result = JudgePrologueChoice(bHonestChoice)
 	
 	var processPhase = SetGamePhase(GamePhase.JudgeChoice)
 	if processPhase == false :
 		return
+		
+	UpdateHermesEmotion(bHonestChoice)
 	
-	UpdateHermesEmotion(_bubbleIndex == 2)
+	var sfx_jingle = sfx_choiceResults[0]
+	var hermesTalkString = "....."
 			
 	match result:
 		ChoicResult.Nothing:
-			if _bubbleIndex == 2:
-				PlayJingles(sfx_choiceResults[4])
-				$MainHUD.PlayCharacterTalkingBubble("No legacy is so rich as honesty")
+			if bHonestChoice:
+				sfx_jingle = sfx_choiceResults[4]
+				hermesTalkString = "No legacy is so rich as honesty"
+				#PlayJingles(sfx_choiceResults[4])
+				#$MainHUD.PlayCharacterTalkingBubble("No legacy is so rich as honesty")
 			else:
-				PlayJingles(sfx_choiceResults[0])
-				$MainHUD.PlayCharacterTalkingBubble("Barefaced liar!!")
+				sfx_jingle = sfx_choiceResults[0]
+				hermesTalkString = "Barefaced liar!!"
+				#PlayJingles(sfx_choiceResults[0])
+				#$MainHUD.PlayCharacterTalkingBubble("Barefaced liar!!")
 		ChoicResult.GiveChoice:
-			PlayJingles(sfx_choiceResults[1])
-			$MainHUD.PlayCharacterTalkingBubble("Anything goes")
+			sfx_jingle = sfx_choiceResults[1]
+			hermesTalkString = "Anything goes"
+			#PlayJingles(sfx_choiceResults[1])
+			#$MainHUD.PlayCharacterTalkingBubble("Anything goes")
 		ChoicResult.GiveOther:
-			PlayJingles(sfx_choiceResults[2])
-			$MainHUD.PlayCharacterTalkingBubble("A little bird told me")
+			sfx_jingle = sfx_choiceResults[2]
+			hermesTalkString = "A little bird told me"
+			#PlayJingles(sfx_choiceResults[2])
+			#$MainHUD.PlayCharacterTalkingBubble("A little bird told me")
 		ChoicResult.Bingo:
-			if _bubbleIndex == 2:			
-				PlayJingles(sfx_choiceResults[3])
-				$MainHUD.PlayCharacterTalkingBubble("Honesty is the best policy")
+			if bHonestChoice:
+				sfx_jingle = sfx_choiceResults[3]
+				hermesTalkString = "Honesty is the best policy"
+				#PlayJingles(sfx_choiceResults[3])
+				#$MainHUD.PlayCharacterTalkingBubble("Honesty is the best policy")
 			else:
-				PlayJingles(sfx_choiceResults[4])
-				$MainHUD.PlayCharacterTalkingBubble("Even if it is not true, ... ...")
+				sfx_jingle = sfx_choiceResults[4]
+				hermesTalkString = "Even if it is not true, ... ..."
+				#PlayJingles(sfx_choiceResults[4])
+				#$MainHUD.PlayCharacterTalkingBubble("Even if it is not true, ... ...")
+	
+	if bInLuxuryChoice:
+		if result != ChoicResult.Bingo:
+			sfx_jingle = sfx_choiceResults[5]
+		hermesTalkString = "Nothing is ever certain"
+	
+	PlayJingles(sfx_jingle)
+	$MainHUD.PlayCharacterTalkingBubble(hermesTalkString)
 	
 	yield(get_tree().create_timer(1.25), "timeout")	
 	
